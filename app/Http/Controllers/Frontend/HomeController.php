@@ -54,17 +54,26 @@ class HomeController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Agenda terbaru
+        | Agenda terbaru — upcoming, fallback ke terbaru kalau kosong
         |--------------------------------------------------------------------------
         */
 
         $limitAgenda = $sections->get('agenda')?->content['limit'] ?? 3;
 
+        // Coba tampilkan agenda upcoming dulu
         $agendas = Agenda::where('is_public', true)
             ->where('tanggal_mulai', '>=', now())
             ->orderBy('tanggal_mulai')
             ->limit($limitAgenda)
             ->get();
+
+        // Fallback: kalau tidak ada upcoming, tampilkan yang terbaru (meski lewat)
+        if ($agendas->isEmpty()) {
+            $agendas = Agenda::where('is_public', true)
+                ->orderByDesc('tanggal_mulai')
+                ->limit($limitAgenda)
+                ->get();
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -102,6 +111,12 @@ class HomeController extends Controller
         $partners = Partner::where('status', 'active')
             ->orderBy('urutan')
             ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return view
+        |--------------------------------------------------------------------------
+        */
 
         return view('frontend.home', compact(
             'sections',

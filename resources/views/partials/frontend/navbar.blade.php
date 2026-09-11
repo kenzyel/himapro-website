@@ -1,6 +1,15 @@
 @php
     $siteLogo = $appSettings['site_logo'] ?? null;
     $siteName = $appSettings['site_name'] ?? 'HIMAPRO TI SAKTI';
+
+    $navContent = $navbarSection?->content ?? [];
+    $brandText = $navContent['brand_text'] ?? $siteName;
+    $brandTagline = $navContent['brand_tagline'] ?? '';
+    $menuItems = collect($navContent['menu'] ?? [])->where('is_active', true)->values();
+    $ctaShow = $navContent['cta_show'] ?? true;
+    $ctaText = $navContent['cta_text'] ?? 'Login Admin';
+    $ctaLink = $navContent['cta_link'] ?? '/admin/login';
+    $ctaIcon = $navContent['cta_icon'] ?? 'bi-box-arrow-in-right';
 @endphp
 
 <nav class="fe-navbar" id="feNavbar">
@@ -14,10 +23,7 @@
 
                 @if ($siteLogo)
                     <div class="fe-brand-logo">
-                        <img
-                            src="{{ asset('storage/' . $siteLogo) }}"
-                            alt="{{ $siteName }}"
-                        >
+                        <img src="{{ asset('storage/' . $siteLogo) }}" alt="{{ $brandText }}">
                     </div>
                 @else
                     <div class="fe-brand-mark">
@@ -27,8 +33,14 @@
 
                 <div class="fe-brand-text">
                     <span class="fe-brand-name">
-                        {{ $siteName }}
+                        {{ $brandText }}
                     </span>
+
+                    @if (! empty($brandTagline))
+                        <span class="fe-brand-tag">
+                            {{ $brandTagline }}
+                        </span>
+                    @endif
                 </div>
 
             </a>
@@ -37,52 +49,37 @@
             {{-- MENU --}}
             <div class="fe-nav-menu" id="feNavMenu">
 
-                <a
-                    href="{{ route('home') }}"
-                    class="fe-nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                >
-                    Beranda
-                </a>
+                @foreach ($menuItems as $item)
+                    @php
+                        $link = $item['link'] ?? '#';
+                        // Cek apakah link active
+                        $isActive = false;
+                        if ($link === '/') {
+                            $isActive = request()->routeIs('home');
+                        } elseif ($link !== '#') {
+                            $isActive = request()->is(ltrim($link, '/') . '*');
+                        }
+                    @endphp
 
-                <a
-                    href="{{ Route::has('frontend.about') ? route('frontend.about') : '#' }}"
-                    class="fe-nav-link {{ request()->routeIs('frontend.about*') ? 'active' : '' }}"
-                >
-                    Tentang
-                </a>
-
-                <a
-                    href="{{ Route::has('frontend.struktur') ? route('frontend.struktur') : '#' }}"
-                    class="fe-nav-link {{ request()->routeIs('frontend.struktur*') ? 'active' : '' }}"
-                >
-                    Struktur
-                </a>
-
-                <a
-                    href="{{ Route::has('frontend.gallery') ? route('frontend.gallery') : '#' }}"
-                    class="fe-nav-link {{ request()->routeIs('frontend.gallery*') ? 'active' : '' }}"
-                >
-                    Gallery
-                </a>
-
-                <a
-                    href="{{ Route::has('frontend.contact') ? route('frontend.contact') : '#' }}"
-                    class="fe-nav-link {{ request()->routeIs('frontend.contact*') ? 'active' : '' }}"
-                >
-                    Kontak
-                </a>
-
-                @auth
-                    <a href="{{ route('admin.dashboard') }}" class="fe-nav-cta">
-                        <i class="bi bi-grid-1x2-fill"></i>
-                        Dashboard
+                    <a
+                        href="{{ $link }}"
+                        class="fe-nav-link {{ $isActive ? 'active' : '' }}"
+                    >
+                        @if (! empty($item['icon']))
+                            <i class="bi {{ $item['icon'] }}" style="margin-right: 6px;"></i>
+                        @endif
+                        {{ $item['label'] ?? '' }}
                     </a>
-                @else
-                    <a href="{{ route('admin.login') }}" class="fe-nav-cta">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        Login Admin
+                @endforeach
+
+                @if ($ctaShow)
+                    <a href="{{ $ctaLink }}" class="fe-nav-cta">
+                        @if (! empty($ctaIcon))
+                            <i class="bi {{ $ctaIcon }}"></i>
+                        @endif
+                        {{ $ctaText }}
                     </a>
-                @endauth
+                @endif
 
             </div>
 

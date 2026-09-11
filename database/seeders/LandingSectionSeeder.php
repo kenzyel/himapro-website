@@ -318,6 +318,69 @@ class LandingSectionSeeder extends Seeder
                 'urutan' => 12,
                 'is_active' => true,
             ],
+
+            /*
+            |------------------------------------------------------------------
+            | NAVBAR (/)
+            |------------------------------------------------------------------
+            */
+            [
+                'key' => 'navbar',
+                'name' => 'Navbar',
+                'title' => 'Navbar Landing Page',
+                'subtitle' => 'Menu dan brand di atas halaman',
+                'content' => [
+                    'brand_text' => 'HIMAPRO TI',
+                    'brand_tagline' => 'SAKTI',
+                    'menu' => [
+                        ['label' => 'Beranda', 'link' => '/', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Tentang', 'link' => '/tentang', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Struktur', 'link' => '/struktur', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Gallery', 'link' => '/gallery', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Kontak', 'link' => '/kontak', 'icon' => '', 'is_active' => true],
+                    ],
+                    'cta_show' => true,
+                    'cta_text' => 'Login Admin',
+                    'cta_link' => '/admin/login',
+                    'cta_icon' => 'bi-box-arrow-in-right',
+                ],
+                'urutan' => 13,
+                'is_active' => true,
+            ],
+
+            /*
+            |------------------------------------------------------------------
+            | FOOTER (/)
+            |------------------------------------------------------------------
+            */
+            [
+                'key' => 'footer',
+                'name' => 'Footer',
+                'title' => 'Footer Landing Page',
+                'subtitle' => 'Bagian bawah setiap halaman',
+                'content' => [
+                    'description' => 'Himpunan Mahasiswa Program Studi Teknologi Informasi SAKTI — Wadah pengembangan potensi, kolaborasi, dan kontribusi mahasiswa.',
+                    'nav_label' => 'Navigasi',
+                    'nav_menu' => [
+                        ['label' => 'Beranda', 'link' => '/', 'is_active' => true],
+                        ['label' => 'Tentang', 'link' => '/tentang', 'is_active' => true],
+                        ['label' => 'Struktur', 'link' => '/struktur', 'is_active' => true],
+                        ['label' => 'Gallery', 'link' => '/gallery', 'is_active' => true],
+                        ['label' => 'Kontak', 'link' => '/kontak', 'is_active' => true],
+                    ],
+                    'program_label' => 'Program',
+                    'program_menu' => [
+                        ['label' => 'Seminar & Workshop', 'link' => '#', 'is_active' => true],
+                        ['label' => 'Kompetisi Teknologi', 'link' => '#', 'is_active' => true],
+                        ['label' => 'Pengabdian Masyarakat', 'link' => '#', 'is_active' => true],
+                        ['label' => 'Pengembangan Karir', 'link' => '#', 'is_active' => true],
+                    ],
+                    'contact_label' => 'Kontak',
+                    'show_sosial' => true,
+                ],
+                'urutan' => 14,
+                'is_active' => true,
+            ],
         ];
 
         foreach ($sections as $section) {

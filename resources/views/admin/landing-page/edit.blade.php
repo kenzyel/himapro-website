@@ -8,7 +8,7 @@
 
     // Tentukan URL preview berdasarkan key section
     $previewUrl = match ($section->key) {
-        'hero', 'about', 'program_kerja', 'agenda', 'pengumuman', 'gallery', 'partner', 'cta' => route('home'),
+        'hero', 'about', 'program_kerja', 'agenda', 'pengumuman', 'gallery', 'partner', 'cta', 'navbar', 'footer' => route('home'),
         'about_page' => route('frontend.about'),
         'visi_misi' => route('frontend.about.visi-misi'),
         'sejarah' => route('frontend.about.sejarah'),
@@ -142,6 +142,10 @@
                         @include('admin.landing-page.forms.sejarah')
                     @elseif ($section->key === 'contact_page')
                         @include('admin.landing-page.forms.contact-page')
+                    @elseif ($section->key === 'navbar')
+                        @include('admin.landing-page.forms.navbar')
+                    @elseif ($section->key === 'footer')
+                        @include('admin.landing-page.forms.footer')
                     @else
                         <div style="padding: 20px; text-align: center; color: var(--muted);">
                             Form untuk section ini belum dibuat.
@@ -413,6 +417,7 @@
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     margin: 0 auto;
+    position: relative;
 }
 
 .lp-preview-frame {
@@ -441,10 +446,7 @@
     height: 85%;
 }
 
-/* =========================================================
-   LOADING OVERLAY
-   ========================================================= */
-
+/* Loading overlay */
 .lp-preview-frame-wrapper::after {
     content: '';
     position: absolute;
@@ -525,7 +527,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const isHidden = splitView.classList.contains('preview-hidden');
 
-        // Simpan state ke localStorage
         localStorage.setItem('lp-preview-hidden', isHidden ? '1' : '0');
 
         if (isHidden) {
@@ -537,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Restore state dari localStorage
+    // Restore state
     if (localStorage.getItem('lp-preview-hidden') === '1') {
         splitView.classList.add('preview-hidden');
         toggleIcon.className = 'bi bi-eye';
@@ -552,16 +553,13 @@ document.addEventListener('DOMContentLoaded', function () {
     window.refreshPreview = function () {
         if (!frame) return;
 
-        // Add spinning animation
         if (refreshBtn) {
             refreshBtn.classList.add('spinning');
             setTimeout(() => refreshBtn.classList.remove('spinning'), 600);
         }
 
-        // Add loading state
         frameWrapper?.classList.add('loading');
 
-        // Reload iframe
         const currentSrc = frame.src;
         frame.src = 'about:blank';
 
@@ -572,7 +570,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 frameWrapper?.classList.remove('loading');
             };
 
-            // Safety timeout
             setTimeout(() => frameWrapper?.classList.remove('loading'), 2000);
         }, 100);
     };
@@ -586,14 +583,11 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('click', function () {
             const device = this.dataset.device;
 
-            // Update active state
             deviceBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
-            // Update wrapper
             frameWrapper.dataset.device = device;
 
-            // Simpan preferensi
             localStorage.setItem('lp-preview-device', device);
         });
     });
@@ -612,12 +606,10 @@ document.addEventListener('DOMContentLoaded', function () {
     */
     if (form) {
         form.addEventListener('submit', function () {
-            // Mark bahwa preview harus refresh setelah redirect
             sessionStorage.setItem('lp-need-refresh', '1');
         });
     }
 
-    // Cek apakah perlu refresh (setelah redirect dari save)
     if (sessionStorage.getItem('lp-need-refresh') === '1') {
         sessionStorage.removeItem('lp-need-refresh');
         setTimeout(() => {

@@ -8,6 +8,7 @@ use App\Models\GalleryItem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class GalleryItemController extends Controller
@@ -26,73 +27,63 @@ class GalleryItemController extends Controller
     }
 
     /**
-     * Menyimpan foto baru.
+     * Menyimpan banyak foto sekaligus.
      */
-    public function store(
-        Request $request,
-        Gallery $gallery
-    ): RedirectResponse {
-        $validated = $request->validate([
-            'file' => [
+    public function store(Request $request, Gallery $gallery): RedirectResponse
+    {
+        $request->validate([
+            'files' => [
+                'required',
+                'array',
+                'max:10',
+            ],
+            'files.*' => [
                 'required',
                 'image',
                 'mimes:jpg,jpeg,png,webp',
                 'max:5120',
             ],
-            'judul' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-            'caption' => [
-                'nullable',
-                'string',
-            ],
-            'urutan' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
         ], [
-            'file.required' => 'Foto wajib dipilih.',
-            'file.image' => 'File yang dipilih harus berupa gambar.',
-            'file.mimes' => 'Foto harus berformat JPG, JPEG, PNG, atau WEBP.',
-            'file.max' => 'Ukuran foto maksimal 5 MB.',
-            'judul.max' => 'Judul foto maksimal 255 karakter.',
-            'urutan.required' => 'Urutan foto wajib diisi.',
-            'urutan.integer' => 'Urutan foto harus berupa angka.',
-            'urutan.min' => 'Urutan foto tidak boleh kurang dari 0.',
+            'files.required' => 'Minimal pilih 1 foto untuk di-upload.',
+            'files.array' => 'Format file tidak valid.',
+            'files.max' => 'Maksimal 10 foto per upload.',
+            'files.*.image' => 'Semua file harus berupa gambar.',
+            'files.*.mimes' => 'Foto harus berformat JPG, JPEG, PNG, atau WEBP.',
+            'files.*.max' => 'Ukuran tiap foto maksimal 5 MB.',
         ]);
 
-        /*
-         * Upload foto ke:
-         * storage/app/public/gallery/items
-         */
-        $path = $request->file('file')->store(
-            'gallery/items',
-            'public'
-        );
+        $lastUrutan = (int) $gallery->items()->max('urutan');
 
-        $validated['gallery_id'] = $gallery->id;
-        $validated['file'] = $path;
+        $uploadedCount = 0;
 
-        GalleryItem::create($validated);
+        foreach ($request->file('files') as $index => $file) {
+
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $judul = Str::limit($originalName, 200, '');
+
+            $path = $file->store('gallery/items', 'public');
+
+            GalleryItem::create([
+                'gallery_id' => $gallery->id,
+                'file' => $path,
+                'judul' => $judul,
+                'caption' => null,
+                'urutan' => $lastUrutan + $index + 1,
+            ]);
+
+            $uploadedCount++;
+        }
 
         return redirect()
             ->route('admin.gallery.show', $gallery)
-            ->with('success', 'Foto berhasil ditambahkan ke gallery.');
+            ->with('success', $uploadedCount . ' foto berhasil di-upload ke gallery.');
     }
 
     /**
      * Menampilkan form edit foto.
      */
-    public function edit(
-        Gallery $gallery,
-        GalleryItem $galleryItem
-    ): View {
-        /*
-         * Pastikan foto memang milik gallery yang sedang dibuka.
-         */
+    public function edit(Gallery $gallery, GalleryItem $galleryItem): View
+    {
         abort_unless(
             $galleryItem->gallery_id === $gallery->id,
             404
@@ -112,9 +103,6 @@ class GalleryItemController extends Controller
         Gallery $gallery,
         GalleryItem $galleryItem
     ): RedirectResponse {
-        /*
-         * Pastikan foto memang milik gallery yang sedang dibuka.
-         */
         abort_unless(
             $galleryItem->gallery_id === $gallery->id,
             404
@@ -151,10 +139,6 @@ class GalleryItemController extends Controller
             'urutan.min' => 'Urutan foto tidak boleh kurang dari 0.',
         ]);
 
-        /*
-         * Jika user memilih foto baru,
-         * hapus foto lama kemudian simpan foto baru.
-         */
         if ($request->hasFile('file')) {
 
             if ($galleryItem->file) {
@@ -171,9 +155,6 @@ class GalleryItemController extends Controller
             unset($validated['file']);
         }
 
-        /*
-         * gallery_id tidak boleh berubah.
-         */
         unset($validated['gallery_id']);
 
         $galleryItem->update($validated);
@@ -190,17 +171,11 @@ class GalleryItemController extends Controller
         Gallery $gallery,
         GalleryItem $galleryItem
     ): RedirectResponse {
-        /*
-         * Pastikan foto memang milik gallery yang sedang dibuka.
-         */
         abort_unless(
             $galleryItem->gallery_id === $gallery->id,
             404
         );
 
-        /*
-         * Hapus file fisik dari storage.
-         */
         if ($galleryItem->file) {
             Storage::disk('public')->delete(
                 $galleryItem->file

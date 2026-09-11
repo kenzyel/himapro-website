@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
+use App\Models\GalleryItem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -51,40 +52,19 @@ class GalleryController extends Controller
     }
 
     /**
-     * Menyimpan gallery baru.
+     * Menyimpan gallery baru + foto-fotonya.
      */
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nama' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
-                'unique:galleries,slug',
-            ],
-            'deskripsi' => [
-                'nullable',
-                'string',
-            ],
-            'cover' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:5120',
-            ],
-            'tanggal' => [
-                'nullable',
-                'date',
-            ],
-            'status' => [
-                'required',
-                'in:draft,published,archived',
-            ],
+            'nama' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:galleries,slug'],
+            'deskripsi' => ['nullable', 'string'],
+            'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'files' => ['nullable', 'array', 'max:10'],
+            'files.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'tanggal' => ['nullable', 'date'],
+            'status' => ['required', 'in:draft,published,archived'],
         ], [
             'nama.required' => 'Nama gallery wajib diisi.',
             'nama.max' => 'Nama gallery maksimal 255 karakter.',
@@ -92,6 +72,10 @@ class GalleryController extends Controller
             'cover.image' => 'Cover harus berupa gambar.',
             'cover.mimes' => 'Cover harus berformat JPG, JPEG, PNG, atau WEBP.',
             'cover.max' => 'Ukuran cover maksimal 5 MB.',
+            'files.max' => 'Maksimal 10 foto per upload.',
+            'files.*.image' => 'Semua file harus berupa gambar.',
+            'files.*.mimes' => 'Foto harus berformat JPG, JPEG, PNG, atau WEBP.',
+            'files.*.max' => 'Ukuran tiap foto maksimal 5 MB.',
             'tanggal.date' => 'Tanggal tidak valid.',
             'status.required' => 'Status wajib dipilih.',
         ]);
@@ -100,35 +84,45 @@ class GalleryController extends Controller
             $validated['slug'] = Str::slug($validated['nama']);
         }
 
-        /*
-         * Pastikan slug unik jika slug otomatis bentrok.
-         */
         $originalSlug = $validated['slug'];
         $counter = 1;
 
-        while (
-            Gallery::where('slug', $validated['slug'])->exists()
-        ) {
+        while (Gallery::where('slug', $validated['slug'])->exists()) {
             $validated['slug'] = $originalSlug . '-' . $counter;
             $counter++;
         }
 
-        /*
-         * User yang sedang login menjadi pemilik/pembuat gallery.
-         */
         $validated['user_id'] = auth()->id();
 
-        /*
-         * Upload cover jika ada.
-         */
         if ($request->hasFile('cover')) {
-            $validated['cover'] = $request->file('cover')->store(
-                'gallery/covers',
-                'public'
-            );
+            $validated['cover'] = $request->file('cover')->store('gallery/covers', 'public');
         }
 
         $gallery = Gallery::create($validated);
+
+        if ($request->hasFile('files')) {
+            $firstFile = true;
+
+            foreach ($request->file('files') as $index => $file) {
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $judul = Str::limit($originalName, 200, '');
+
+                $path = $file->store('gallery/items', 'public');
+
+                GalleryItem::create([
+                    'gallery_id' => $gallery->id,
+                    'file' => $path,
+                    'judul' => $judul,
+                    'caption' => null,
+                    'urutan' => $index + 1,
+                ]);
+
+                if ($firstFile && empty($gallery->cover)) {
+                    $gallery->update(['cover' => $path]);
+                    $firstFile = false;
+                }
+            }
+        }
 
         return redirect()
             ->route('admin.gallery.show', $gallery)
@@ -160,42 +154,19 @@ class GalleryController extends Controller
     }
 
     /**
-     * Memperbarui gallery.
+     * Memperbarui gallery + tambah foto baru (opsional).
      */
-    public function update(
-        Request $request,
-        Gallery $gallery
-    ): RedirectResponse {
+    public function update(Request $request, Gallery $gallery): RedirectResponse
+    {
         $validated = $request->validate([
-            'nama' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
-                'unique:galleries,slug,' . $gallery->id,
-            ],
-            'deskripsi' => [
-                'nullable',
-                'string',
-            ],
-            'cover' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,webp',
-                'max:5120',
-            ],
-            'tanggal' => [
-                'nullable',
-                'date',
-            ],
-            'status' => [
-                'required',
-                'in:draft,published,archived',
-            ],
+            'nama' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:galleries,slug,' . $gallery->id],
+            'deskripsi' => ['nullable', 'string'],
+            'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'files' => ['nullable', 'array', 'max:10'],
+            'files.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'tanggal' => ['nullable', 'date'],
+            'status' => ['required', 'in:draft,published,archived'],
         ], [
             'nama.required' => 'Nama gallery wajib diisi.',
             'nama.max' => 'Nama gallery maksimal 255 karakter.',
@@ -203,6 +174,10 @@ class GalleryController extends Controller
             'cover.image' => 'Cover harus berupa gambar.',
             'cover.mimes' => 'Cover harus berformat JPG, JPEG, PNG, atau WEBP.',
             'cover.max' => 'Ukuran cover maksimal 5 MB.',
+            'files.max' => 'Maksimal 10 foto per upload.',
+            'files.*.image' => 'Semua file harus berupa gambar.',
+            'files.*.mimes' => 'Foto harus berformat JPG, JPEG, PNG, atau WEBP.',
+            'files.*.max' => 'Ukuran tiap foto maksimal 5 MB.',
             'tanggal.date' => 'Tanggal tidak valid.',
             'status.required' => 'Status wajib dipilih.',
         ]);
@@ -211,9 +186,6 @@ class GalleryController extends Controller
             $validated['slug'] = Str::slug($validated['nama']);
         }
 
-        /*
-         * Pastikan slug tidak bentrok dengan gallery lain.
-         */
         $originalSlug = $validated['slug'];
         $counter = 1;
 
@@ -226,29 +198,38 @@ class GalleryController extends Controller
             $counter++;
         }
 
-        /*
-         * Upload cover baru jika ada.
-         */
         if ($request->hasFile('cover')) {
-
             if ($gallery->cover) {
                 Storage::disk('public')->delete($gallery->cover);
             }
 
-            $validated['cover'] = $request->file('cover')->store(
-                'gallery/covers',
-                'public'
-            );
+            $validated['cover'] = $request->file('cover')->store('gallery/covers', 'public');
         } else {
             unset($validated['cover']);
         }
 
-        /*
-         * Jangan mengubah user_id saat edit.
-         */
         unset($validated['user_id']);
 
         $gallery->update($validated);
+
+        if ($request->hasFile('files')) {
+            $lastUrutan = (int) $gallery->items()->max('urutan');
+
+            foreach ($request->file('files') as $index => $file) {
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $judul = Str::limit($originalName, 200, '');
+
+                $path = $file->store('gallery/items', 'public');
+
+                GalleryItem::create([
+                    'gallery_id' => $gallery->id,
+                    'file' => $path,
+                    'judul' => $judul,
+                    'caption' => null,
+                    'urutan' => $lastUrutan + $index + 1,
+                ]);
+            }
+        }
 
         return redirect()
             ->route('admin.gallery.show', $gallery)
@@ -260,21 +241,15 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery): RedirectResponse
     {
-        /*
-         * Jangan hapus gallery yang masih memiliki foto.
-         */
         if ($gallery->items()->exists()) {
             return redirect()
                 ->route('admin.gallery.index')
                 ->with(
                     'error',
-                    'Gallery tidak dapat dihapus karena masih memiliki foto.'
+                    'Gallery tidak dapat dihapus karena masih memiliki foto. Hapus semua foto terlebih dahulu.'
                 );
         }
 
-        /*
-         * Hapus cover dari storage.
-         */
         if ($gallery->cover) {
             Storage::disk('public')->delete($gallery->cover);
         }

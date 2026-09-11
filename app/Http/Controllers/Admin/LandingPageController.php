@@ -12,9 +12,6 @@ use Illuminate\View\View;
 
 class LandingPageController extends Controller
 {
-    /**
-     * Daftar semua section landing page.
-     */
     public function index(): View
     {
         $sections = LandingSection::orderBy('urutan')->get();
@@ -22,9 +19,6 @@ class LandingPageController extends Controller
         return view('admin.landing-page.index', compact('sections'));
     }
 
-    /**
-     * Form edit section.
-     */
     public function edit(LandingSection $landingPage): View
     {
         return view('admin.landing-page.edit', [
@@ -32,9 +26,6 @@ class LandingPageController extends Controller
         ]);
     }
 
-    /**
-     * Update section.
-     */
     public function update(LandingPageRequest $request, LandingSection $landingPage): RedirectResponse
     {
         $data = $request->validated();
@@ -51,9 +42,6 @@ class LandingPageController extends Controller
             ->with('success', 'Section "' . $landingPage->name . '" berhasil diperbarui.');
     }
 
-    /**
-     * Toggle aktif/non-aktif.
-     */
     public function toggle(LandingSection $landingPage): RedirectResponse
     {
         $landingPage->update([
@@ -65,9 +53,6 @@ class LandingPageController extends Controller
         return back()->with('success', 'Section "' . $landingPage->name . '" berhasil ' . $status . '.');
     }
 
-    /**
-     * Reorder sections — dipanggil via AJAX drag & drop.
-     */
     public function reorder(Request $request): JsonResponse
     {
         $request->validate([
@@ -87,9 +72,6 @@ class LandingPageController extends Controller
         ]);
     }
 
-    /**
-     * Reset section ke default (dari seeder).
-     */
     public function resetSection(LandingSection $landingPage): RedirectResponse
     {
         $defaults = $this->getDefaultSections();
@@ -110,9 +92,6 @@ class LandingPageController extends Controller
             ->with('success', 'Section "' . $landingPage->name . '" berhasil di-reset ke default.');
     }
 
-    /**
-     * Data default section (dari seeder).
-     */
     protected function getDefaultSections(): array
     {
         return [
@@ -132,27 +111,9 @@ class LandingPageController extends Controller
                     'cta2_icon' => 'bi-chat-dots',
                     'show_stats' => true,
                     'floating_cards' => [
-                        [
-                            'icon' => 'bi-code-slash',
-                            'title' => 'Kolaborasi',
-                            'description' => 'Tumbuh bersama',
-                            'color' => 'primary',
-                            'is_active' => true,
-                        ],
-                        [
-                            'icon' => 'bi-lightbulb-fill',
-                            'title' => 'Inovasi',
-                            'description' => 'Karya nyata',
-                            'color' => 'green',
-                            'is_active' => true,
-                        ],
-                        [
-                            'icon' => 'bi-rocket-takeoff-fill',
-                            'title' => 'Berkembang',
-                            'description' => 'Potensi maksimal',
-                            'color' => 'blue',
-                            'is_active' => true,
-                        ],
+                        ['icon' => 'bi-code-slash', 'title' => 'Kolaborasi', 'description' => 'Tumbuh bersama', 'color' => 'primary', 'is_active' => true],
+                        ['icon' => 'bi-lightbulb-fill', 'title' => 'Inovasi', 'description' => 'Karya nyata', 'color' => 'green', 'is_active' => true],
+                        ['icon' => 'bi-rocket-takeoff-fill', 'title' => 'Berkembang', 'description' => 'Potensi maksimal', 'color' => 'blue', 'is_active' => true],
                     ],
                 ],
             ],
@@ -163,7 +124,7 @@ class LandingPageController extends Controller
                 'content' => [
                     'label' => 'Tentang Kami',
                     'title' => 'Lebih dari Sekadar <span class="accent">Organisasi</span>',
-                    'description' => 'HIMAPRO TI SAKTI adalah rumah bagi mahasiswa Teknologi Informasi untuk berkembang, berkarya, dan berkontribusi. Kami percaya bahwa kolaborasi adalah kunci untuk menciptakan dampak yang berkelanjutan.',
+                    'description' => 'HIMAPRO TI SAKTI adalah rumah bagi mahasiswa Teknologi Informasi untuk berkembang, berkarya, dan berkontribusi.',
                     'features' => [
                         ['icon' => 'bi-check-lg', 'title' => 'Visi yang Jelas', 'description' => 'Menjadi organisasi mahasiswa yang inovatif dan berdampak.'],
                         ['icon' => 'bi-check-lg', 'title' => 'Misi yang Nyata', 'description' => 'Mengembangkan potensi, kompetensi, dan karakter mahasiswa.'],
@@ -240,7 +201,7 @@ class LandingPageController extends Controller
                 'content' => [
                     'label' => 'Mari Terhubung',
                     'title' => 'Punya Pertanyaan atau Ingin <span class="accent">Berkolaborasi</span>?',
-                    'description' => 'Kami terbuka untuk diskusi, kolaborasi, maupun pertanyaan seputar HIMAPRO TI SAKTI. Hubungi kami dan mari ciptakan sesuatu yang berdampak.',
+                    'description' => 'Kami terbuka untuk diskusi, kolaborasi, maupun pertanyaan seputar HIMAPRO TI SAKTI.',
                     'cta1_text' => 'Kirim Pesan',
                     'cta1_link' => '/kontak',
                     'cta1_icon' => 'bi-envelope-fill',
@@ -255,12 +216,12 @@ class LandingPageController extends Controller
                 'subtitle' => 'Halaman /tentang',
                 'content' => [
                     'title' => 'Kenali <span class="accent">HIMAPRO TI SAKTI</span> Lebih Dekat',
-                    'description' => 'Himpunan Mahasiswa Program Studi Teknologi Informasi SAKTI — wadah pengembangan potensi, kolaborasi, dan kontribusi mahasiswa.',
+                    'description' => 'Himpunan Mahasiswa Program Studi Teknologi Informasi SAKTI.',
                     'intro_label' => 'Siapa Kami',
                     'intro_title' => 'Rumah untuk <span class="accent">Tumbuh & Berkarya</span>',
                     'intro_paragraphs' => [
                         'HIMAPRO TI SAKTI adalah organisasi mahasiswa yang menjadi wadah bagi mahasiswa Program Studi Teknologi Informasi untuk mengembangkan potensi, berkolaborasi, dan berkontribusi nyata.',
-                        'Kami percaya bahwa setiap mahasiswa memiliki potensi unik yang perlu diwadahi dengan tepat — melalui program kerja yang berdampak, lingkungan yang suportif, dan kolaborasi yang bermakna.',
+                        'Kami percaya bahwa setiap mahasiswa memiliki potensi unik yang perlu diwadahi dengan tepat.',
                         'Melalui tiga departemen utama — Internal, Eksternal, dan Minat Bakat — kami membangun ekosistem yang mendukung pertumbuhan holistik mahasiswa.',
                     ],
                     'values_label' => 'Nilai Kami',
@@ -295,7 +256,7 @@ class LandingPageController extends Controller
                 'content' => [
                     'title' => 'Perjalanan <span class="accent">HIMAPRO TI SAKTI</span>',
                     'description' => 'Jejak langkah dan tonggak sejarah yang membentuk kami hari ini.',
-                    'intro' => 'HIMAPRO TI SAKTI lahir dari semangat mahasiswa Program Studi Teknologi Informasi untuk memiliki wadah yang mampu mengakomodasi aspirasi, mengembangkan potensi, dan mempererat kebersamaan.',
+                    'intro' => 'HIMAPRO TI SAKTI lahir dari semangat mahasiswa Program Studi Teknologi Informasi untuk memiliki wadah yang mampu mengakomodasi aspirasi.',
                     'timeline_label' => 'Timeline',
                     'timeline_title' => 'Tonggak <span class="accent">Perjalanan</span>',
                     'timeline' => [
@@ -315,6 +276,51 @@ class LandingPageController extends Controller
                     'description' => 'Punya pertanyaan, ingin berkolaborasi, atau sekadar menyapa? Kami siap mendengarkan.',
                     'form_title' => 'Kirim Pesan',
                     'form_description' => 'Isi form di bawah ini dan kami akan segera merespons.',
+                ],
+            ],
+            'navbar' => [
+                'key' => 'navbar',
+                'title' => 'Navbar Landing Page',
+                'subtitle' => 'Menu dan brand di atas halaman',
+                'content' => [
+                    'brand_text' => 'HIMAPRO TI',
+                    'brand_tagline' => 'SAKTI',
+                    'menu' => [
+                        ['label' => 'Beranda', 'link' => '/', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Tentang', 'link' => '/tentang', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Struktur', 'link' => '/struktur', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Gallery', 'link' => '/gallery', 'icon' => '', 'is_active' => true],
+                        ['label' => 'Kontak', 'link' => '/kontak', 'icon' => '', 'is_active' => true],
+                    ],
+                    'cta_show' => true,
+                    'cta_text' => 'Login Admin',
+                    'cta_link' => '/admin/login',
+                    'cta_icon' => 'bi-box-arrow-in-right',
+                ],
+            ],
+            'footer' => [
+                'key' => 'footer',
+                'title' => 'Footer Landing Page',
+                'subtitle' => 'Bagian bawah setiap halaman',
+                'content' => [
+                    'description' => 'Himpunan Mahasiswa Program Studi Teknologi Informasi SAKTI — Wadah pengembangan potensi, kolaborasi, dan kontribusi mahasiswa.',
+                    'nav_label' => 'Navigasi',
+                    'nav_menu' => [
+                        ['label' => 'Beranda', 'link' => '/', 'is_active' => true],
+                        ['label' => 'Tentang', 'link' => '/tentang', 'is_active' => true],
+                        ['label' => 'Struktur', 'link' => '/struktur', 'is_active' => true],
+                        ['label' => 'Gallery', 'link' => '/gallery', 'is_active' => true],
+                        ['label' => 'Kontak', 'link' => '/kontak', 'is_active' => true],
+                    ],
+                    'program_label' => 'Program',
+                    'program_menu' => [
+                        ['label' => 'Seminar & Workshop', 'link' => '#', 'is_active' => true],
+                        ['label' => 'Kompetisi Teknologi', 'link' => '#', 'is_active' => true],
+                        ['label' => 'Pengabdian Masyarakat', 'link' => '#', 'is_active' => true],
+                        ['label' => 'Pengembangan Karir', 'link' => '#', 'is_active' => true],
+                    ],
+                    'contact_label' => 'Kontak',
+                    'show_sosial' => true,
                 ],
             ],
         ];

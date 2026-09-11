@@ -384,14 +384,19 @@
 
 
 @push('scripts')
+@php
+    $photosJson = $gallery->items->map(function ($item) {
+        return [
+            'src' => asset('storage/' . $item->file),
+            'title' => $item->judul,
+            'caption' => $item->caption,
+        ];
+    })->values();
+@endphp
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    const photos = @json($gallery->items->map(fn ($item) => [
-        'src' => asset('storage/' . $item->file),
-        'title' => $item->judul,
-        'caption' => $item->caption,
-    ])->values());
+    const photos = @json($photosJson);
 
     const lightbox = document.getElementById('feLightbox');
     const lightboxImg = document.getElementById('feLightboxImg');
@@ -434,7 +439,6 @@ document.addEventListener('DOMContentLoaded', function () {
         lightboxCounter.textContent = (currentIndex + 1) + ' / ' + photos.length;
     }
 
-    // ESC & arrow keys
     document.addEventListener('keydown', function (e) {
         if (!lightbox.classList.contains('open')) return;
 
@@ -443,7 +447,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.key === 'ArrowRight') lightboxNav(1);
     });
 
-    // Klik backdrop untuk close
     lightbox?.addEventListener('click', function (e) {
         if (e.target === lightbox) closeLightbox();
     });

@@ -1,11 +1,17 @@
 @php
     $siteLogo = $appSettings['site_logo'] ?? null;
     $siteName = $appSettings['site_name'] ?? 'HIMAPRO TI SAKTI';
+
+    $footerContent = $footerSection?->content ?? [];
+    $footerDesc = $footerContent['description'] ?? ($appSettings['site_description'] ?? 'Himpunan Mahasiswa Program Studi Teknologi Informasi SAKTI.');
+    $navLabel = $footerContent['nav_label'] ?? 'Navigasi';
+    $navMenu = collect($footerContent['nav_menu'] ?? [])->where('is_active', true)->values();
+    $programLabel = $footerContent['program_label'] ?? 'Program';
+    $programMenu = collect($footerContent['program_menu'] ?? [])->where('is_active', true)->values();
+    $contactLabel = $footerContent['contact_label'] ?? 'Kontak';
+    $showSosial = $footerContent['show_sosial'] ?? true;
 @endphp
 
-{{-- =========================================================
-     FOOTER UTAMA
-     ========================================================= --}}
 <footer class="fe-footer">
 
     <div class="fe-container">
@@ -19,144 +25,106 @@
 
                     @if ($siteLogo)
                         <div class="fe-brand-logo">
-                            <img
-                                src="{{ asset('storage/' . $siteLogo) }}"
-                                alt="{{ $siteName }}"
-                            >
+                            <img src="{{ asset('storage/' . $siteLogo) }}" alt="{{ $siteName }}">
                         </div>
                     @else
                         <div class="fe-brand-mark">HT</div>
                     @endif
 
                     <div class="fe-brand-text">
-                        <span class="fe-brand-name">
-                            {{ $siteName }}
-                        </span>
+                        <span class="fe-brand-name">{{ $siteName }}</span>
                     </div>
                 </a>
 
                 <p class="fe-footer-text" style="margin-top: 16px;">
-                    {{ $appSettings['site_description'] ?? 'Himpunan Mahasiswa Program Studi Teknologi Informasi SAKTI — Wadah pengembangan potensi, kolaborasi, dan kontribusi mahasiswa.' }}
+                    {{ $footerDesc }}
                 </p>
 
-                <div class="fe-footer-socials">
+                @if ($showSosial)
+                    <div class="fe-footer-socials">
 
-                    @if (! empty($appSettings['social_instagram']))
-                        <a href="{{ $appSettings['social_instagram'] }}" target="_blank" class="fe-footer-social" title="Instagram">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                    @endif
+                        @if (! empty($appSettings['social_instagram']))
+                            <a href="{{ $appSettings['social_instagram'] }}" target="_blank" class="fe-footer-social" title="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                        @endif
 
-                    @if (! empty($appSettings['social_tiktok']))
-                        <a href="{{ $appSettings['social_tiktok'] }}" target="_blank" class="fe-footer-social" title="TikTok">
-                            <i class="bi bi-tiktok"></i>
-                        </a>
-                    @endif
+                        @if (! empty($appSettings['social_tiktok']))
+                            <a href="{{ $appSettings['social_tiktok'] }}" target="_blank" class="fe-footer-social" title="TikTok">
+                                <i class="bi bi-tiktok"></i>
+                            </a>
+                        @endif
 
-                    @if (! empty($appSettings['social_youtube']))
-                        <a href="{{ $appSettings['social_youtube'] }}" target="_blank" class="fe-footer-social" title="YouTube">
-                            <i class="bi bi-youtube"></i>
-                        </a>
-                    @endif
+                        @if (! empty($appSettings['social_youtube']))
+                            <a href="{{ $appSettings['social_youtube'] }}" target="_blank" class="fe-footer-social" title="YouTube">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                        @endif
 
-                    @if (! empty($appSettings['social_whatsapp']))
-                        <a href="{{ $appSettings['social_whatsapp'] }}" target="_blank" class="fe-footer-social" title="WhatsApp">
-                            <i class="bi bi-whatsapp"></i>
-                        </a>
-                    @endif
+                        @if (! empty($appSettings['social_whatsapp']))
+                            <a href="{{ $appSettings['social_whatsapp'] }}" target="_blank" class="fe-footer-social" title="WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                        @endif
 
-                    @if (! empty($appSettings['social_facebook']))
-                        <a href="{{ $appSettings['social_facebook'] }}" target="_blank" class="fe-footer-social" title="Facebook">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                    @endif
+                        @if (! empty($appSettings['social_facebook']))
+                            <a href="{{ $appSettings['social_facebook'] }}" target="_blank" class="fe-footer-social" title="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                        @endif
 
-                </div>
+                    </div>
+                @endif
 
             </div>
 
 
             {{-- NAVIGASI --}}
-            <div class="col-lg-2 col-md-6 col-6">
+            @if ($navMenu->count() > 0)
+                <div class="col-lg-2 col-md-6 col-6">
 
-                <h3 class="fe-footer-title">Navigasi</h3>
+                    <h3 class="fe-footer-title">{{ $navLabel }}</h3>
 
-                <div class="fe-footer-links">
+                    <div class="fe-footer-links">
 
-                    <a href="{{ route('home') }}" class="fe-footer-link">
-                        <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
-                        Beranda
-                    </a>
+                        @foreach ($navMenu as $item)
+                            <a href="{{ $item['link'] ?? '#' }}" class="fe-footer-link">
+                                <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
+                                {{ $item['label'] ?? '' }}
+                            </a>
+                        @endforeach
 
-                    @if (Route::has('frontend.about'))
-                        <a href="{{ route('frontend.about') }}" class="fe-footer-link">
-                            <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
-                            Tentang
-                        </a>
-                    @endif
-
-                    @if (Route::has('frontend.struktur'))
-                        <a href="{{ route('frontend.struktur') }}" class="fe-footer-link">
-                            <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
-                            Struktur
-                        </a>
-                    @endif
-
-                    @if (Route::has('frontend.gallery'))
-                        <a href="{{ route('frontend.gallery') }}" class="fe-footer-link">
-                            <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
-                            Gallery
-                        </a>
-                    @endif
-
-                    @if (Route::has('frontend.contact'))
-                        <a href="{{ route('frontend.contact') }}" class="fe-footer-link">
-                            <i class="bi bi-chevron-right" style="font-size: 10px;"></i>
-                            Kontak
-                        </a>
-                    @endif
+                    </div>
 
                 </div>
-
-            </div>
+            @endif
 
 
             {{-- PROGRAM --}}
-            <div class="col-lg-3 col-md-6 col-6">
+            @if ($programMenu->count() > 0)
+                <div class="col-lg-3 col-md-6 col-6">
 
-                <h3 class="fe-footer-title">Program</h3>
+                    <h3 class="fe-footer-title">{{ $programLabel }}</h3>
 
-                <div class="fe-footer-links">
+                    <div class="fe-footer-links">
 
-                    <div class="fe-footer-link">
-                        <i class="bi bi-bookmark-fill" style="font-size: 10px;"></i>
-                        Seminar & Workshop
-                    </div>
+                        @foreach ($programMenu as $item)
+                            <a href="{{ $item['link'] ?? '#' }}" class="fe-footer-link">
+                                <i class="bi bi-bookmark-fill" style="font-size: 10px;"></i>
+                                {{ $item['label'] ?? '' }}
+                            </a>
+                        @endforeach
 
-                    <div class="fe-footer-link">
-                        <i class="bi bi-bookmark-fill" style="font-size: 10px;"></i>
-                        Kompetisi Teknologi
-                    </div>
-
-                    <div class="fe-footer-link">
-                        <i class="bi bi-bookmark-fill" style="font-size: 10px;"></i>
-                        Pengabdian Masyarakat
-                    </div>
-
-                    <div class="fe-footer-link">
-                        <i class="bi bi-bookmark-fill" style="font-size: 10px;"></i>
-                        Pengembangan Karir
                     </div>
 
                 </div>
-
-            </div>
+            @endif
 
 
             {{-- KONTAK --}}
             <div class="col-lg-3 col-md-6">
 
-                <h3 class="fe-footer-title">Kontak</h3>
+                <h3 class="fe-footer-title">{{ $contactLabel }}</h3>
 
                 <div class="fe-footer-links">
 

@@ -9,6 +9,7 @@ use App\Models\Dokumen;
 use App\Models\Gallery;
 use App\Models\GalleryItem;
 use App\Models\Keuangan;
+use App\Models\LandingSection;
 use App\Models\Notulensi;
 use App\Models\Partner;
 use App\Models\Pesan;
@@ -98,9 +99,22 @@ class AppServiceProvider extends ServiceProvider
                 $unreadPesanCount = 0;
             }
 
+            // Navbar & Footer section (untuk frontend)
+            $navbarSection = null;
+            $footerSection = null;
+
+            try {
+                $navbarSection = LandingSection::get('navbar');
+                $footerSection = LandingSection::get('footer');
+            } catch (\Throwable $e) {
+                // Abaikan kalau tabel belum ada
+            }
+
             $view->with([
                 'appSettings' => $settings,
                 'unreadPesanCount' => $unreadPesanCount,
+                'navbarSection' => $navbarSection,
+                'footerSection' => $footerSection,
             ]);
         });
     }
