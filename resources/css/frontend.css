@@ -907,6 +907,7 @@ main > section:last-child.fe-section-sm {
     background: linear-gradient(135deg, rgba(255, 210, 26, 0.3), transparent 60%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     mask-composite: exclude;
     pointer-events: none;
 }

@@ -475,6 +475,7 @@ body.sidebar-locked {
     padding: 1px;
     background: linear-gradient(135deg, rgba(255, 210, 26, 0.4), transparent 60%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
