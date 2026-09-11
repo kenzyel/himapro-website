@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('partners', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('nama', 255);
+            $table->string('slug', 255)->unique();
+
+            $table->string('logo', 255)->nullable();
+            $table->string('website', 255)->nullable();
+
+            $table->text('deskripsi')->nullable();
+
+            $table->unsignedInteger('urutan')->index();
+
+            $table->string('status', 30)
+                ->default('active')
+                ->index();
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('partners');
+    }
+};
