@@ -50,7 +50,7 @@
                 'pimpinan'   => 'Pimpinan',
                 'sekretaris' => 'Sekretaris',
                 'bendahara'  => 'Bendahara',
-                'co'         => 'CO Departemen',
+                'co'         => 'Kepala Departemen',
                 'agt'        => 'Anggota Departemen',
             ] as $value => $label)
                 <option value="{{ $value }}" @selected(old('tipe_jabatan', $pengurus->tipe_jabatan ?? '') === $value)>

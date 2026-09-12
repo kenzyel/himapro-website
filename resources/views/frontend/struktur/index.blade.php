@@ -59,7 +59,7 @@
         <div class="fe-container">
 
             <div class="fe-struktur-heading" data-aos="fade-up">
-                <div class="fe-section-label">Pimpinan</div>
+                <div class="fe-section-label">Badan Pengurus Harian</div>
                 <h2 class="fe-section-title" style="font-size: 28px;">
                     Ketua & <span class="accent">Wakil</span>
                 </h2>
@@ -88,7 +88,7 @@
                 @if ($sekretaris->count() > 0)
                     <div class="col-lg-6">
                         <div class="fe-struktur-heading" style="text-align: left; margin-bottom: 30px;" data-aos="fade-up">
-                            <div class="fe-section-label">Sekretaris</div>
+                            <!-- <div class="fe-section-label">Sekretaris</div> -->
                             <h2 class="fe-section-title" style="font-size: 24px; text-align: left;">
                                 Sekretaris <span class="accent">Umum</span>
                             </h2>
@@ -107,7 +107,7 @@
                 @if ($bendahara->count() > 0)
                     <div class="col-lg-6">
                         <div class="fe-struktur-heading" style="text-align: left; margin-bottom: 30px;" data-aos="fade-up">
-                            <div class="fe-section-label">Bendahara</div>
+                            <!-- <div class="fe-section-label">Bendahara</div> -->
                             <h2 class="fe-section-title" style="font-size: 24px; text-align: left;">
                                 Bendahara <span class="accent">Umum</span>
                             </h2>
@@ -138,7 +138,7 @@
             <div class="fe-struktur-heading" data-aos="fade-up">
                 <div class="fe-section-label">Departemen</div>
                 <h2 class="fe-section-title">
-                    Koordinator & <span class="accent">Anggota</span>
+                    Kepala Departemen & <span class="accent">Anggota</span>
                 </h2>
             </div>
 
