@@ -131,20 +131,20 @@ Route::middleware(['auth', 'admin'])
         Route::delete('/departemen/{departemen}', [DepartemenController::class, 'destroy'])
             ->middleware('permission:departemen.delete')->name('departemen.destroy');
 
-        // Program Kerja
+        // Program Kerja  ← FIX: {program_kerja} → {programKerja}
         Route::get('/program-kerja', [ProgramKerjaController::class, 'index'])
             ->middleware('permission:program-kerja.view')->name('program-kerja.index');
         Route::get('/program-kerja/create', [ProgramKerjaController::class, 'create'])
             ->middleware('permission:program-kerja.create')->name('program-kerja.create');
         Route::post('/program-kerja', [ProgramKerjaController::class, 'store'])
             ->middleware('permission:program-kerja.create')->name('program-kerja.store');
-        Route::get('/program-kerja/{program_kerja}', [ProgramKerjaController::class, 'show'])
+        Route::get('/program-kerja/{programKerja}', [ProgramKerjaController::class, 'show'])
             ->middleware('permission:program-kerja.view')->name('program-kerja.show');
-        Route::get('/program-kerja/{program_kerja}/edit', [ProgramKerjaController::class, 'edit'])
+        Route::get('/program-kerja/{programKerja}/edit', [ProgramKerjaController::class, 'edit'])
             ->middleware('permission:program-kerja.update')->name('program-kerja.edit');
-        Route::put('/program-kerja/{program_kerja}', [ProgramKerjaController::class, 'update'])
+        Route::put('/program-kerja/{programKerja}', [ProgramKerjaController::class, 'update'])
             ->middleware('permission:program-kerja.update')->name('program-kerja.update');
-        Route::delete('/program-kerja/{program_kerja}', [ProgramKerjaController::class, 'destroy'])
+        Route::delete('/program-kerja/{programKerja}', [ProgramKerjaController::class, 'destroy'])
             ->middleware('permission:program-kerja.delete')->name('program-kerja.destroy');
 
 

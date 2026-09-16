@@ -18,7 +18,7 @@ class PengurusSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
 
-        $pembina = Pengurus::updateOrCreate(
+        Pengurus::updateOrCreate(
             [
                 'nama' => 'Suastika Yulia Riska, S.Pd., M.Kom',
                 'periode' => $periode,
@@ -26,6 +26,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => null,
                 'parent_id' => null,
+                'is_bph' => false,
                 'jabatan' => 'Pembina',
                 'tipe_jabatan' => 'pembina',
                 'urutan' => 1,
@@ -35,7 +36,7 @@ class PengurusSeeder extends Seeder
 
         /*
         |--------------------------------------------------------------------------
-        | Ketua & Wakil
+        | BPH — Badan Pengurus Harian (Ketua, Wakil, Sekre, Bendahara)
         |--------------------------------------------------------------------------
         */
 
@@ -47,6 +48,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => null,
                 'parent_id' => null,
+                'is_bph' => true,       // ✅
                 'jabatan' => 'Ketua Umum',
                 'tipe_jabatan' => 'pimpinan',
                 'urutan' => 2,
@@ -54,7 +56,7 @@ class PengurusSeeder extends Seeder
             ]
         );
 
-        $wakil = Pengurus::updateOrCreate(
+        Pengurus::updateOrCreate(
             [
                 'nama' => 'Fika Aulia',
                 'periode' => $periode,
@@ -62,18 +64,13 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => null,
                 'parent_id' => $ketua->id,
+                'is_bph' => true,       // ✅
                 'jabatan' => 'Wakil Ketua Umum',
                 'tipe_jabatan' => 'pimpinan',
                 'urutan' => 3,
                 'status' => 'active',
             ]
         );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Sekretaris
-        |--------------------------------------------------------------------------
-        */
 
         Pengurus::updateOrCreate(
             [
@@ -83,6 +80,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => null,
                 'parent_id' => $ketua->id,
+                'is_bph' => true,       // ✅
                 'jabatan' => 'Sekretaris Umum I',
                 'tipe_jabatan' => 'sekretaris',
                 'urutan' => 4,
@@ -98,18 +96,13 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => null,
                 'parent_id' => $ketua->id,
+                'is_bph' => true,       // ✅
                 'jabatan' => 'Sekretaris Umum II',
                 'tipe_jabatan' => 'sekretaris',
                 'urutan' => 5,
                 'status' => 'active',
             ]
         );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Bendahara
-        |--------------------------------------------------------------------------
-        */
 
         Pengurus::updateOrCreate(
             [
@@ -119,6 +112,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => null,
                 'parent_id' => $ketua->id,
+                'is_bph' => true,       // ✅
                 'jabatan' => 'Bendahara Umum I',
                 'tipe_jabatan' => 'bendahara',
                 'urutan' => 6,
@@ -134,6 +128,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => null,
                 'parent_id' => $ketua->id,
+                'is_bph' => true,       // ✅
                 'jabatan' => 'Bendahara Umum II',
                 'tipe_jabatan' => 'bendahara',
                 'urutan' => 7,
@@ -157,6 +152,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => $internal->id,
                 'parent_id' => $ketua->id,
+                'is_bph' => false,
                 'jabatan' => 'CO Departemen Internal',
                 'tipe_jabatan' => 'co',
                 'urutan' => 8,
@@ -177,6 +173,7 @@ class PengurusSeeder extends Seeder
                 [
                     'departemen_id' => $internal->id,
                     'parent_id' => $coInternal->id,
+                    'is_bph' => false,
                     'jabatan' => 'Anggota Departemen Internal',
                     'tipe_jabatan' => 'agt',
                     'urutan' => 9 + $index,
@@ -201,6 +198,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => $eksternal->id,
                 'parent_id' => $ketua->id,
+                'is_bph' => false,
                 'jabatan' => 'CO Departemen Eksternal',
                 'tipe_jabatan' => 'co',
                 'urutan' => 12,
@@ -221,6 +219,7 @@ class PengurusSeeder extends Seeder
                 [
                     'departemen_id' => $eksternal->id,
                     'parent_id' => $coEksternal->id,
+                    'is_bph' => false,
                     'jabatan' => 'Anggota Departemen Eksternal',
                     'tipe_jabatan' => 'agt',
                     'urutan' => 13 + $index,
@@ -245,6 +244,7 @@ class PengurusSeeder extends Seeder
             [
                 'departemen_id' => $minatBakat->id,
                 'parent_id' => $ketua->id,
+                'is_bph' => false,
                 'jabatan' => 'CO Departemen Minat Bakat',
                 'tipe_jabatan' => 'co',
                 'urutan' => 16,
@@ -265,6 +265,7 @@ class PengurusSeeder extends Seeder
                 [
                     'departemen_id' => $minatBakat->id,
                     'parent_id' => $coMinatBakat->id,
+                    'is_bph' => false,
                     'jabatan' => 'Anggota Departemen Minat Bakat',
                     'tipe_jabatan' => 'agt',
                     'urutan' => 17 + $index,

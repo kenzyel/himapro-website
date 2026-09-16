@@ -15,15 +15,7 @@ class ProgramKerjaRequest extends FormRequest
 
     public function rules(): array
     {
-        $programKerja = $this->route('program_kerja');
-
-        if (!$programKerja) {
-            $programKerja = $this->route('programKerja');
-        }
-
-        $programKerjaId = $programKerja instanceof \App\Models\ProgramKerja
-            ? $programKerja->id
-            : $programKerja;
+        $programKerjaId = $this->route('programKerja')?->id;
 
         return [
             'departemen_id' => [

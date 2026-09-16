@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->string('periode', 20)->index();
             $table->string('status', 30)
-                ->default('draft')
+                ->default('planned')
                 ->index();
 
             $table->date('tanggal_mulai')->nullable()->index();

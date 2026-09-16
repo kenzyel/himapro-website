@@ -128,9 +128,39 @@
 @endif
 
 
-{{-- DEPARTEMEN --}}
-@if ($departemens->count() > 0)
+{{-- ✅ BPH — BADAN PENGURUS HARIAN (section baru, SEBELUM departemen) --}}
+@if (isset($bph) && $bph->count() > 0)
     <section class="fe-section">
+        <div class="fe-container">
+
+            <div class="fe-section-heading" data-aos="fade-up">
+                <div class="fe-section-label">Badan Pengurus Harian</div>
+                <h2 class="fe-section-title">
+                    Pengurus <span class="accent">Inti</span> Kami
+                </h2>
+                <p class="fe-section-desc">
+                    Ketua, wakil, sekretaris, dan bendahara yang menggerakkan HIMAPRO TI SAKTI.
+                </p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+
+                @foreach ($bph as $index => $p)
+                    <div class="col-lg-3 col-md-4 col-6" data-aos="fade-up" data-aos-delay="{{ $index * 80 }}">
+                        @include('frontend.struktur._card', ['pengurus' => $p])
+                    </div>
+                @endforeach
+
+            </div>
+
+        </div>
+    </section>
+@endif
+
+
+{{-- DEPARTEMEN (tetap 3 departemen, tidak termasuk BPH) --}}
+@if ($departemens->count() > 0)
+    <section class="fe-section" style="background: var(--fe-section);">
         <div class="fe-container">
 
             <div class="fe-section-heading" data-aos="fade-up">

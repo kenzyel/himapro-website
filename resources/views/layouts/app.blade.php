@@ -73,6 +73,9 @@
 
 <body class="fe-body">
 
+    {{-- ✅ PARTICLE SWARM CURSOR — Background --}}
+    @include('partials.frontend.particle')
+
     @include('partials.frontend.navbar')
 
     <main>

@@ -44,31 +44,31 @@
                     <div class="fe-footer-socials">
 
                         @if (! empty($appSettings['social_instagram']))
-                            <a href="{{ $appSettings['social_instagram'] }}" target="_blank" class="fe-footer-social" title="Instagram">
+                            <a href="{{ $appSettings['social_instagram'] }}" target="_blank" rel="noopener" class="fe-footer-social ig" title="Instagram">
                                 <i class="bi bi-instagram"></i>
                             </a>
                         @endif
 
                         @if (! empty($appSettings['social_tiktok']))
-                            <a href="{{ $appSettings['social_tiktok'] }}" target="_blank" class="fe-footer-social" title="TikTok">
+                            <a href="{{ $appSettings['social_tiktok'] }}" target="_blank" rel="noopener" class="fe-footer-social tt" title="TikTok">
                                 <i class="bi bi-tiktok"></i>
                             </a>
                         @endif
 
                         @if (! empty($appSettings['social_youtube']))
-                            <a href="{{ $appSettings['social_youtube'] }}" target="_blank" class="fe-footer-social" title="YouTube">
+                            <a href="{{ $appSettings['social_youtube'] }}" target="_blank" rel="noopener" class="fe-footer-social yt" title="YouTube">
                                 <i class="bi bi-youtube"></i>
                             </a>
                         @endif
 
                         @if (! empty($appSettings['social_whatsapp']))
-                            <a href="{{ $appSettings['social_whatsapp'] }}" target="_blank" class="fe-footer-social" title="WhatsApp">
+                            <a href="{{ $appSettings['social_whatsapp'] }}" target="_blank" rel="noopener" class="fe-footer-social wa" title="WhatsApp">
                                 <i class="bi bi-whatsapp"></i>
                             </a>
                         @endif
 
                         @if (! empty($appSettings['social_facebook']))
-                            <a href="{{ $appSettings['social_facebook'] }}" target="_blank" class="fe-footer-social" title="Facebook">
+                            <a href="{{ $appSettings['social_facebook'] }}" target="_blank" rel="noopener" class="fe-footer-social fb" title="Facebook">
                                 <i class="bi bi-facebook"></i>
                             </a>
                         @endif

@@ -30,7 +30,15 @@ class AboutController extends Controller
             ->orderBy('urutan')
             ->get();
 
-        return view('frontend.about.index', compact('section', 'stats', 'departemens'));
+        // ✅ BPH — Badan Pengurus Harian
+        // Ketua, Wakil, Sekretaris, Bendahara (tanpa pembina, tanpa CO, tanpa anggota)
+        $bph = Pengurus::where('status', 'active')
+            ->whereIn('tipe_jabatan', ['pimpinan', 'sekretaris', 'bendahara'])
+            ->whereNull('departemen_id')
+            ->orderBy('urutan')
+            ->get();
+
+        return view('frontend.about.index', compact('section', 'stats', 'departemens', 'bph'));
     }
 
     /**

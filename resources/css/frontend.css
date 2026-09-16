@@ -60,7 +60,6 @@ body.fe-body a {
     transition: color var(--fe-transition);
 }
 
-/* Page header — semua halaman selain home */
 .fe-page-header {
     padding-top: 160px !important;
 }
@@ -1560,7 +1559,7 @@ main > section:last-child.fe-section-sm {
 }
 
 /* =========================================================
-   STRUKTUR — Pengurus Card (4:5 Instagram Portrait)
+   STRUKTUR — Pengurus Card
    ========================================================= */
 
 .fe-pengurus-grid {
@@ -1581,8 +1580,6 @@ main > section:last-child.fe-section-sm {
         gap: 14px;
     }
 }
-
-/* CARD */
 
 .fe-pengurus-card {
     display: block;
@@ -1620,8 +1617,6 @@ main > section:last-child.fe-section-sm {
     transform: scaleX(1);
 }
 
-/* FOTO — 4:5 ASPECT RATIO */
-
 .fe-pengurus-photo {
     position: relative;
     width: 100%;
@@ -1654,8 +1649,6 @@ main > section:last-child.fe-section-sm {
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* GRADIENT OVERLAY di bawah foto */
-
 .fe-pengurus-photo::after {
     content: '';
     position: absolute;
@@ -1667,8 +1660,6 @@ main > section:last-child.fe-section-sm {
     pointer-events: none;
     z-index: 1;
 }
-
-/* BODY */
 
 .fe-pengurus-body {
     padding: 18px 20px 22px;
@@ -1716,25 +1707,10 @@ main > section:last-child.fe-section-sm {
     flex-shrink: 0;
 }
 
-/* FEATURED — untuk pembina & pimpinan */
-
-.fe-pengurus-card.featured .fe-pengurus-photo {
-    aspect-ratio: 4 / 5;
-}
-
-.fe-pengurus-card.featured .fe-pengurus-initials {
-    font-size: 90px;
-}
-
-.fe-pengurus-card.featured .fe-pengurus-name {
-    font-size: 17px;
-}
-
-.fe-pengurus-card.featured .fe-pengurus-role {
-    font-size: 13.5px;
-}
-
-/* COMPACT — grid lebih kecil untuk anggota departemen */
+.fe-pengurus-card.featured .fe-pengurus-photo { aspect-ratio: 4 / 5; }
+.fe-pengurus-card.featured .fe-pengurus-initials { font-size: 90px; }
+.fe-pengurus-card.featured .fe-pengurus-name { font-size: 17px; }
+.fe-pengurus-card.featured .fe-pengurus-role { font-size: 13.5px; }
 
 .fe-pengurus-grid.compact {
     grid-template-columns: repeat(4, 1fr);
@@ -1742,18 +1718,12 @@ main > section:last-child.fe-section-sm {
 }
 
 @media (max-width: 1199.98px) {
-    .fe-pengurus-grid.compact {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .fe-pengurus-grid.compact { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 767.98px) {
-    .fe-pengurus-grid.compact {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .fe-pengurus-grid.compact { grid-template-columns: repeat(2, 1fr); }
 }
-
-/* DETAIL — Foto besar di halaman detail */
 
 .fe-profile-photo {
     position: relative;
@@ -1785,26 +1755,12 @@ main > section:last-child.fe-section-sm {
 }
 
 @media (max-width: 991.98px) {
-    .fe-profile-initials {
-        font-size: 90px;
-    }
+    .fe-profile-initials { font-size: 90px; }
 }
 
-/* SEKSI STRUKTUR — section wrapper */
-
-.fe-struktur-section {
-    padding: 80px 0;
-    position: relative;
-}
-
-.fe-struktur-heading {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.fe-struktur-heading .fe-section-label {
-    margin-bottom: 16px;
-}
+.fe-struktur-section { padding: 80px 0; position: relative; }
+.fe-struktur-heading { text-align: center; margin-bottom: 50px; }
+.fe-struktur-heading .fe-section-label { margin-bottom: 16px; }
 
 /* =========================================================
    BRAND LOGO — Gambar
@@ -1828,50 +1784,639 @@ main > section:last-child.fe-section-sm {
     display: block;
 }
 
-/* Kalau logo lebih besar dari 42px, mungkin perlu ukuran custom */
-
 @media (max-width: 767.98px) {
-    .fe-brand-logo {
-        width: 36px;
-        height: 36px;
-    }
+    .fe-brand-logo { width: 36px; height: 36px; }
 }
 
 /* =========================================================
    HERO CARD — Warna Icon Dinamis
    ========================================================= */
 
-.fe-hero-card-icon.fe-color-primary {
-    background: rgba(255, 210, 26, 0.15);
-    color: #FFD21A;
+.fe-hero-card-icon.fe-color-primary { background: rgba(255, 210, 26, 0.15); color: #FFD21A; }
+.fe-hero-card-icon.fe-color-green { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+.fe-hero-card-icon.fe-color-blue { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+.fe-hero-card-icon.fe-color-purple { background: rgba(168, 85, 247, 0.15); color: #c4b5fd; }
+.fe-hero-card-icon.fe-color-orange { background: rgba(251, 146, 60, 0.15); color: #fdba74; }
+.fe-hero-card-icon.fe-color-pink { background: rgba(236, 72, 153, 0.15); color: #f9a8d4; }
+.fe-hero-card-icon.fe-color-red { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+
+/* =========================================================
+   CYBER-FLUX CURSOR — Theme SAKTI
+   ========================================================= */
+
+.fe-scene-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: screen;
 }
 
-.fe-hero-card-icon.fe-color-green {
-    background: rgba(34, 197, 94, 0.15);
-    color: #86efac;
+/* Hide cursor asli — HANYA desktop */
+@media (hover: hover) and (pointer: fine) {
+    body.fe-body,
+    body.fe-body * {
+        cursor: none !important;
+    }
 }
 
-.fe-hero-card-icon.fe-color-blue {
-    background: rgba(59, 130, 246, 0.15);
-    color: #93c5fd;
+/* Content di atas canvas */
+body.fe-body main,
+body.fe-body .fe-navbar,
+body.fe-body .fe-footer {
+    position: relative;
+    z-index: 10;
 }
 
-.fe-hero-card-icon.fe-color-purple {
-    background: rgba(168, 85, 247, 0.15);
-    color: #c4b5fd;
+/* Sembunyikan di mobile / reduced-motion */
+@media (max-width: 767.98px) {
+    .fe-scene-canvas,
+    .fe-loader {
+        display: none !important;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .fe-scene-canvas,
+    .fe-loader {
+        display: none !important;
+    }
 }
 
-.fe-hero-card-icon.fe-color-orange {
-    background: rgba(251, 146, 60, 0.15);
-    color: #fdba74;
+/* LOADING SCREEN */
+.fe-loader {
+    position: fixed;
+    inset: 0;
+    background: #020204;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease;
 }
 
-.fe-hero-card-icon.fe-color-pink {
-    background: rgba(236, 72, 153, 0.15);
-    color: #f9a8d4;
+.fe-loader-text {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    color: var(--fe-primary);
+    font-weight: 700;
+    letter-spacing: 4px;
+    font-size: 14px;
+    text-transform: uppercase;
+    animation: feBlink 1s infinite;
 }
 
-.fe-hero-card-icon.fe-color-red {
-    background: rgba(239, 68, 68, 0.15);
-    color: #fca5a5;
+@keyframes feBlink {
+    50% { opacity: 0.4; }
+}
+
+/* GLITCH EFFECT */
+.fe-glitch-active {
+    animation: feGlitchAnim 0.3s infinite;
+    background: rgba(255, 210, 26, 0.15) !important;
+    text-shadow: 2px 0 #ff0055, -2px 0 #ffd21a !important;
+    border-color: var(--fe-primary) !important;
+    color: #fff !important;
+}
+
+@keyframes feGlitchAnim {
+    0%   { transform: translate(0); }
+    20%  { transform: translate(-2px, 2px); }
+    40%  { transform: translate(-2px, -2px); }
+    60%  { transform: translate(2px, 2px); }
+    80%  { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+
+/* =========================================================
+   SOCIAL MEDIA SECTION — Icon Neon + Particles
+   ========================================================= */
+
+.fe-social-section {
+    position: relative;
+    padding: 100px 0;
+    background: var(--fe-bg);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Canvas particles di belakang */
+.fe-social-particles {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* Container icon */
+.fe-social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+/* Icon base */
+.fe-social-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    font-size: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    color: inherit;
+    z-index: 1;
+}
+
+.fe-social-icon i {
+    font-size: 32px;
+    position: relative;
+    z-index: 2;
+    transition: all 0.35s ease;
+}
+
+/* =========================================================
+   INSTAGRAM
+========================================================= */
+.fe-social-icon.ig i {
+    background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fe-social-icon.ig::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.fe-social-icon.ig:hover {
+    background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
+    transform: translateY(-6px) scale(1.1);
+    box-shadow:
+        0 8px 30px rgba(253, 29, 29, 0.5),
+        0 0 40px rgba(131, 58, 180, 0.5);
+}
+
+.fe-social-icon.ig:hover i {
+    background: none;
+    -webkit-text-fill-color: #fff;
+    color: #fff;
+}
+
+/* =========================================================
+   TIKTOK
+========================================================= */
+.fe-social-icon.tt i {
+    color: #4de8f4;
+    filter: drop-shadow(3px 3px 0 #fe2c55);
+}
+
+.fe-social-icon.tt::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 2px solid #4de8f4;
+    box-shadow: 2px 2px 0 #fe2c55;
+    pointer-events: none;
+}
+
+.fe-social-icon.tt:hover {
+    background: #fff;
+    transform: translateY(-6px) scale(1.1);
+    box-shadow:
+        0 8px 30px rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(77, 232, 244, 0.5);
+}
+
+.fe-social-icon.tt:hover i {
+    color: #000;
+    filter: drop-shadow(3px 3px 0 #fe2c55);
+}
+
+/* =========================================================
+   YOUTUBE
+========================================================= */
+.fe-social-icon.yt i {
+    color: #ff0000;
+}
+
+.fe-social-icon.yt::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 2px solid #ff0000;
+    pointer-events: none;
+}
+
+.fe-social-icon.yt:hover {
+    background: #ff0000;
+    transform: translateY(-6px) scale(1.1);
+    box-shadow:
+        0 8px 30px rgba(255, 0, 0, 0.5),
+        0 0 40px rgba(255, 0, 0, 0.5);
+}
+
+.fe-social-icon.yt:hover i {
+    color: #fff;
+}
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+.fe-social-icon.wa i {
+    color: #25d366;
+}
+
+.fe-social-icon.wa::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 2px solid #25d366;
+    pointer-events: none;
+}
+
+.fe-social-icon.wa:hover {
+    background: #25d366;
+    transform: translateY(-6px) scale(1.1);
+    box-shadow:
+        0 8px 30px rgba(37, 211, 102, 0.5),
+        0 0 40px rgba(37, 211, 102, 0.5);
+}
+
+.fe-social-icon.wa:hover i {
+    color: #fff;
+}
+
+/* =========================================================
+   FACEBOOK
+========================================================= */
+.fe-social-icon.fb i {
+    color: #1877f2;
+}
+
+.fe-social-icon.fb::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 2px solid #1877f2;
+    pointer-events: none;
+}
+
+.fe-social-icon.fb:hover {
+    background: #1877f2;
+    transform: translateY(-6px) scale(1.1);
+    box-shadow:
+        0 8px 30px rgba(24, 119, 242, 0.5),
+        0 0 40px rgba(24, 119, 242, 0.5);
+}
+
+.fe-social-icon.fb:hover i {
+    color: #fff;
+}
+
+/* =========================================================
+   PULSE ANIMATION
+========================================================= */
+@keyframes feSocialPulse {
+    0% {
+        box-shadow:
+            0 0 0 0 currentColor,
+            0 0 15px currentColor;
+    }
+    70% {
+        box-shadow:
+            0 0 0 20px transparent,
+            0 0 25px currentColor;
+    }
+    100% {
+        box-shadow:
+            0 0 0 0 transparent,
+            0 0 15px currentColor;
+    }
+}
+
+.fe-social-icon.ig,
+.fe-social-icon.tt,
+.fe-social-icon.yt,
+.fe-social-icon.wa,
+.fe-social-icon.fb {
+    animation: feSocialPulse 3s ease-in-out infinite;
+}
+
+.fe-social-icon.ig { animation-delay: 0s; }
+.fe-social-icon.tt { animation-delay: 0.6s; }
+.fe-social-icon.yt { animation-delay: 1.2s; }
+.fe-social-icon.wa { animation-delay: 1.8s; }
+.fe-social-icon.fb { animation-delay: 2.4s; }
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 767.98px) {
+    .fe-social-section {
+        padding: 60px 0;
+    }
+
+    .fe-social-icons {
+        gap: 18px;
+    }
+
+    .fe-social-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 26px;
+    }
+
+    .fe-social-icon i {
+        font-size: 26px;
+    }
+}
+
+
+/* =========================================================
+   SOCIAL MEDIA ICONS — Neon Hover (Footer + Contact)
+   ========================================================= */
+
+/* ---------------------------------------------
+   FOOTER SOCIAL ICONS
+   --------------------------------------------- */
+.fe-footer-socials {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.fe-footer-social {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--fe-border);
+    color: var(--fe-muted);
+    font-size: 18px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.fe-footer-social i {
+    position: relative;
+    z-index: 2;
+    transition: all 0.35s ease;
+}
+
+/* ---------------------------------------------
+   CONTACT SOCIAL ICONS (info kontak)
+   --------------------------------------------- */
+.fe-socials {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.fe-social-item {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--fe-border);
+    color: var(--fe-muted);
+    font-size: 20px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.fe-social-item i {
+    position: relative;
+    z-index: 2;
+    transition: all 0.35s ease;
+}
+
+/* =========================================================
+   BASE HOVER — naik + scale (semua platform)
+   ========================================================= */
+.fe-footer-social:hover,
+.fe-social-item:hover {
+    transform: translateY(-4px) scale(1.08);
+}
+
+/* =========================================================
+   INSTAGRAM
+   ========================================================= */
+.fe-footer-social.ig:hover,
+.fe-social-item.ig:hover {
+    background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
+    border-color: transparent;
+    box-shadow:
+        0 8px 30px rgba(253, 29, 29, 0.5),
+        0 0 40px rgba(131, 58, 180, 0.5);
+}
+
+.fe-footer-social.ig:hover i,
+.fe-social-item.ig:hover i {
+    color: #fff;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+/* =========================================================
+   TIKTOK
+   ========================================================= */
+.fe-footer-social.tt:hover,
+.fe-social-item.tt:hover {
+    background: #fff;
+    border-color: transparent;
+    box-shadow:
+        0 8px 30px rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(77, 232, 244, 0.5);
+}
+
+.fe-footer-social.tt:hover i,
+.fe-social-item.tt:hover i {
+    color: #000;
+    filter:
+        drop-shadow(0 0 6px rgba(77, 232, 244, 0.8))
+        drop-shadow(3px 3px 0 #fe2c55);
+}
+
+/* =========================================================
+   YOUTUBE
+   ========================================================= */
+.fe-footer-social.yt:hover,
+.fe-social-item.yt:hover {
+    background: #ff0000;
+    border-color: transparent;
+    box-shadow:
+        0 8px 30px rgba(255, 0, 0, 0.5),
+        0 0 40px rgba(255, 0, 0, 0.5);
+}
+
+.fe-footer-social.yt:hover i,
+.fe-social-item.yt:hover i {
+    color: #fff;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+/* =========================================================
+   WHATSAPP
+   ========================================================= */
+.fe-footer-social.wa:hover,
+.fe-social-item.wa:hover {
+    background: #25d366;
+    border-color: transparent;
+    box-shadow:
+        0 8px 30px rgba(37, 211, 102, 0.5),
+        0 0 40px rgba(37, 211, 102, 0.5);
+}
+
+.fe-footer-social.wa:hover i,
+.fe-social-item.wa:hover i {
+    color: #fff;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+/* =========================================================
+   FACEBOOK
+   ========================================================= */
+.fe-footer-social.fb:hover,
+.fe-social-item.fb:hover {
+    background: #1877f2;
+    border-color: transparent;
+    box-shadow:
+        0 8px 30px rgba(24, 119, 242, 0.5),
+        0 0 40px rgba(24, 119, 242, 0.5);
+}
+
+.fe-footer-social.fb:hover i,
+.fe-social-item.fb:hover i {
+    color: #fff;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+/* =========================================================
+   COLORED ICON DEFAULT (sebelum hover)
+   ========================================================= */
+
+/* Instagram — gradient text */
+.fe-footer-social.ig i,
+.fe-social-item.ig i {
+    background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* TikTok — cyan + drop shadow pink */
+.fe-footer-social.tt i,
+.fe-social-item.tt i {
+    color: #4de8f4;
+    filter: drop-shadow(2px 2px 0 #fe2c55);
+}
+
+/* YouTube — merah */
+.fe-footer-social.yt i,
+.fe-social-item.yt i {
+    color: #ff0000;
+}
+
+/* WhatsApp — hijau */
+.fe-footer-social.wa i,
+.fe-social-item.wa i {
+    color: #25d366;
+}
+
+/* Facebook — biru */
+.fe-footer-social.fb i,
+.fe-social-item.fb i {
+    color: #1877f2;
+}
+
+/* =========================================================
+   PULSE RING ANIMATION (subtle, background)
+   ========================================================= */
+@keyframes feSocialRingPulse {
+    0% {
+        box-shadow: 0 0 0 0 currentColor;
+    }
+    70% {
+        box-shadow: 0 0 0 10px transparent;
+    }
+    100% {
+        box-shadow: 0 0 0 0 transparent;
+    }
+}
+
+.fe-footer-social.ig,
+.fe-footer-social.tt,
+.fe-footer-social.yt,
+.fe-footer-social.wa,
+.fe-footer-social.fb,
+.fe-social-item.ig,
+.fe-social-item.tt,
+.fe-social-item.yt,
+.fe-social-item.wa,
+.fe-social-item.fb {
+    animation: feSocialRingPulse 3s ease-in-out infinite;
+}
+
+/* Delay berbeda per platform biar bergantian */
+.fe-footer-social.ig, .fe-social-item.ig { animation-delay: 0s; }
+.fe-footer-social.tt, .fe-social-item.tt { animation-delay: 0.6s; }
+.fe-footer-social.yt, .fe-social-item.yt { animation-delay: 1.2s; }
+.fe-footer-social.wa, .fe-social-item.wa { animation-delay: 1.8s; }
+.fe-footer-social.fb, .fe-social-item.fb { animation-delay: 2.4s; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 767.98px) {
+    .fe-footer-social {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .fe-social-item {
+        width: 46px;
+        height: 46px;
+        font-size: 18px;
+    }
 }

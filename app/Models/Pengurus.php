@@ -16,6 +16,7 @@ class Pengurus extends Model
     protected $fillable = [
         'departemen_id',
         'parent_id',
+        'is_bph',
         'nama',
         'jabatan',
         'tipe_jabatan',
@@ -29,6 +30,7 @@ class Pengurus extends Model
     ];
 
     protected $casts = [
+        'is_bph' => 'boolean',
         'urutan' => 'integer',
     ];
 
@@ -45,5 +47,13 @@ class Pengurus extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Pengurus::class, 'parent_id');
+    }
+
+    /**
+     * ✅ Nama departemen untuk ditampilkan (— kalau tidak ada)
+     */
+    public function getDepartemenNamaAttribute(): string
+    {
+        return $this->departemen?->nama ?? '—';
     }
 }

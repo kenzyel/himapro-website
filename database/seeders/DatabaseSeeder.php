@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             PengurusSeeder::class,
             AdminUserSeeder::class,
             SettingSeeder::class,
+            LandingSectionSeeder::class,
         ]);
     }
 }

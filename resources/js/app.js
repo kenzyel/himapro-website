@@ -21,10 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* =======================================================
-       AOS — Animasi scroll
-       ======================================================= */
-
     AOS.init({
         duration: 600,
         easing: 'ease-out-cubic',
@@ -33,18 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         delay: 0,
     });
 
-
-    /* =======================================================
-       COUNTUP — Animasi angka statistik
-       ======================================================= */
-
     document.querySelectorAll('[data-countup]').forEach((el) => {
-
         const target = parseInt(el.dataset.countup, 10);
-
-        if (Number.isNaN(target)) {
-            return;
-        }
+        if (Number.isNaN(target)) return;
 
         const counter = new CountUp(el, target, {
             duration: 1.6,
@@ -53,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (!counter.error) {
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
@@ -67,34 +53,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
-    /* =======================================================
-       AUTO DISMISS ALERTS
-       ======================================================= */
-
     document.querySelectorAll('.alert-dismissible').forEach((alert) => {
-
         setTimeout(() => {
             alert.style.transition = 'opacity .4s ease, transform .4s ease';
             alert.style.opacity = '0';
             alert.style.transform = 'translateY(-10px)';
-
             setTimeout(() => alert.remove(), 400);
         }, 5000);
     });
 
-
-    /* =======================================================
-       RIPPLE EFFECT
-       ======================================================= */
-
     document.querySelectorAll('.btn-himapro, .btn-warning').forEach((btn) => {
-
         btn.addEventListener('click', function (e) {
-
             const rect = this.getBoundingClientRect();
             const ripple = document.createElement('span');
-
             const size = Math.max(rect.width, rect.height);
             const x = e.clientX - rect.left - size / 2;
             const y = e.clientY - rect.top - size / 2;
@@ -122,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => ripple.remove(), 600);
         });
     });
-
 });
 
 
@@ -131,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================= */
 
 (function () {
-
     const STORAGE_KEY = 'himapro-sidebar-collapsed';
 
     function isDesktop() {
@@ -139,21 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applySavedState() {
-
-        if (!isDesktop()) {
-            return;
-        }
-
+        if (!isDesktop()) return;
         const collapsed = localStorage.getItem(STORAGE_KEY) === '1';
-
         if (collapsed) {
             document.body.classList.add('sidebar-collapsed');
         }
     }
 
-    /**
-     * Buka sidebar (mobile).
-     */
     window.openSidebar = function () {
         const sidebar = document.querySelector('.admin-sidebar');
         const overlay = document.getElementById('adminSidebarOverlay') ||
@@ -171,17 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('sidebar-locked');
     };
 
-    /**
-     * Tutup sidebar (mobile).
-     */
     window.closeSidebar = function () {
         const sidebar = document.querySelector('.admin-sidebar');
         const overlay = document.getElementById('adminSidebarOverlay') ||
                         document.querySelector('.admin-sidebar-overlay');
 
-        if (sidebar) {
-            sidebar.classList.remove('sidebar-open');
-        }
+        if (sidebar) sidebar.classList.remove('sidebar-open');
 
         if (overlay) {
             overlay.classList.remove('show');
@@ -191,25 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('sidebar-locked');
     };
 
-    /**
-     * Toggle sidebar.
-     */
     window.toggleSidebar = function () {
-
         const sidebar = document.querySelector('.admin-sidebar');
-
         if (!sidebar) return;
 
         if (isDesktop()) {
-
             document.body.classList.toggle('sidebar-collapsed');
-
             const isCollapsed = document.body.classList.contains('sidebar-collapsed');
-
             localStorage.setItem(STORAGE_KEY, isCollapsed ? '1' : '0');
-
         } else {
-
             if (sidebar.classList.contains('sidebar-open')) {
                 closeSidebar();
             } else {
@@ -218,51 +164,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    /**
-     * ESC untuk close sidebar (mobile).
-     */
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !isDesktop()) {
-            closeSidebar();
-        }
+        if (e.key === 'Escape' && !isDesktop()) closeSidebar();
     });
 
-    /**
-     * Klik menu sidebar → tutup otomatis (mobile).
-     */
     document.addEventListener('click', function (e) {
         if (isDesktop()) return;
-
         const link = e.target.closest('.admin-nav-link');
-
         if (link && !link.classList.contains('active')) {
             setTimeout(closeSidebar, 150);
         }
     });
 
-    /**
-     * Reset saat resize.
-     */
     let resizeTimer;
-
     window.addEventListener('resize', () => {
-
         clearTimeout(resizeTimer);
-
         resizeTimer = setTimeout(() => {
-
             if (isDesktop()) {
                 closeSidebar();
                 applySavedState();
             } else {
                 document.body.classList.remove('sidebar-collapsed');
             }
-
         }, 150);
     });
 
     document.addEventListener('DOMContentLoaded', applySavedState);
-
 })();
 
 
@@ -271,9 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================= */
 
 (function () {
-
     function initFrontendNavbar() {
-
         const navbar = document.querySelector('.fe-navbar');
         const toggle = document.querySelector('.fe-nav-toggle');
         const menu = document.querySelector('.fe-nav-menu');
@@ -320,11 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         window.addEventListener('resize', function () {
-            if (window.innerWidth > 991.98) {
-                closeMenu();
-            }
+            if (window.innerWidth > 991.98) closeMenu();
         });
-
     }
 
     if (document.readyState === 'loading') {
@@ -332,17 +254,14 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         initFrontendNavbar();
     }
-
 })();
 
 
 /* =========================================================
-   FRONTEND — Particle Generator & Tilt Effect
+   FRONTEND — Particle Generator & Tilt
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', function () {
-
-    // Particle
     const particleContainers = document.querySelectorAll('.fe-particles');
 
     particleContainers.forEach(function (container) {
@@ -358,7 +277,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Tilt
     const tiltCards = document.querySelectorAll('.fe-tilt');
 
     tiltCards.forEach(function (card) {
@@ -366,10 +284,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const rect = this.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-
             const rotateY = ((x - centerX) / centerX) * 3;
             const rotateX = ((centerY - y) / centerY) * 3;
 
@@ -380,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.style.transform = '';
         });
     });
-
 });
 
 
@@ -389,11 +304,8 @@ document.addEventListener('DOMContentLoaded', function () {
    ========================================================= */
 
 (function () {
-
     function initAdminSearch() {
-
         const wrapper = document.getElementById('adminSearch');
-
         if (!wrapper) return;
 
         const trigger = document.getElementById('adminSearchTrigger');
@@ -405,10 +317,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let debounceTimer = null;
         let activeIndex = -1;
         let currentItems = [];
-
-        // ============================
-        // OPEN / CLOSE
-        // ============================
 
         window.openAdminSearch = function () {
             modal.classList.add('open');
@@ -441,33 +349,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
         trigger?.addEventListener('click', window.openAdminSearch);
 
-        // ============================
-        // KEYBOARD SHORTCUT (Ctrl/Cmd + K)
-        // ============================
-
         document.addEventListener('keydown', function (e) {
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
-
                 if (modal.classList.contains('open')) {
                     window.closeAdminSearch();
                 } else {
                     window.openAdminSearch();
                 }
             }
-
             if (e.key === 'Escape' && modal.classList.contains('open')) {
                 window.closeAdminSearch();
             }
         });
 
-        // ============================
-        // INPUT HANDLER (debounce)
-        // ============================
-
         input?.addEventListener('input', function () {
             const q = this.value.trim();
-
             clearTimeout(debounceTimer);
 
             if (q.length < 2) {
@@ -484,10 +381,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 300);
         });
 
-        // ============================
-        // FETCH RESULTS
-        // ============================
-
         async function fetchResults(q) {
             try {
                 const response = await fetch(`${searchUrl}?q=${encodeURIComponent(q)}`, {
@@ -500,9 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!response.ok) throw new Error('Network error');
 
                 const data = await response.json();
-
                 renderResults(data, q);
-
             } catch (error) {
                 console.error('Search error:', error);
                 results.innerHTML = `
@@ -513,10 +404,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
             }
         }
-
-        // ============================
-        // RENDER RESULTS
-        // ============================
 
         function renderResults(data, query) {
             currentItems = [];
@@ -546,15 +433,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 group.items.forEach((item) => {
                     const idx = currentItems.length;
 
-                    currentItems.push({
-                        url: item.url,
-                        element: null,
-                    });
+                    currentItems.push({ url: item.url, element: null });
 
                     html += `
-                        <a href="${item.url}"
-                           class="admin-search-item"
-                           data-index="${idx}">
+                        <a href="${item.url}" class="admin-search-item" data-index="${idx}">
                             <div class="admin-search-item-icon">
                                 <i class="bi ${group.icon}"></i>
                             </div>
@@ -574,16 +456,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             results.querySelectorAll('.admin-search-item').forEach((el, i) => {
                 currentItems[i].element = el;
-
-                el.addEventListener('mouseenter', () => {
-                    setActive(i);
-                });
+                el.addEventListener('mouseenter', () => setActive(i));
             });
         }
-
-        // ============================
-        // KEYBOARD NAVIGATION
-        // ============================
 
         input?.addEventListener('keydown', function (e) {
             if (currentItems.length === 0) return;
@@ -614,10 +489,6 @@ document.addEventListener('DOMContentLoaded', function () {
             currentItems[index]?.element?.scrollIntoView({ block: 'nearest' });
         }
 
-        // ============================
-        // HELPERS
-        // ============================
-
         function escapeHtml(str) {
             return String(str)
                 .replace(/&/g, '&amp;')
@@ -629,14 +500,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function highlight(text, query) {
             if (!text) return '';
-
             const escaped = escapeHtml(text);
-
             if (!query) return escaped;
-
             const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
             const regex = new RegExp(`(${safeQuery})`, 'gi');
-
             return escaped.replace(regex, '<mark>$1</mark>');
         }
     }
@@ -646,5 +513,479 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         initAdminSearch();
     }
+})();
 
+
+/* =========================================================
+   CYBER-FLUX CURSOR — Theme SAKTI
+   Port dari Cyber-Flux Cursor Experience
+   ========================================================= */
+
+(function () {
+    function initCyberFluxCursor() {
+        const canvas = document.getElementById('scene-canvas');
+        const loader = document.getElementById('feLoader');
+
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        if (window.innerWidth < 768) {
+            if (loader) loader.style.display = 'none';
+            return;
+        }
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            if (loader) loader.style.display = 'none';
+            return;
+        }
+
+        // ==============================
+        // CONFIG — Theme SAKTI
+        // ==============================
+        const cfg = {
+            gridSpacing: 60,
+            gridDistortion: 25,
+            gridForceDist: 150,
+            connectionDist: 110,
+            particleCount: 60,
+            cursorEase: 0.12,
+            trailMax: 20,
+
+            colorPrimary: '#FFD21A',
+            colorSecondary: '#F5A900',
+            colorGlitch: '#ff0055',
+            colorGrid: 'rgba(255, 210, 26, 0.25)',
+            colorParticle: 'rgba(255, 210, 26, 0.9)',
+        };
+
+        let width, height;
+        const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        const cursor = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        const trail = [];
+        let isHovering = false;
+        let hoverTarget = null;
+        let shake = 0;
+
+        // ==============================
+        // GRID
+        // ==============================
+        class GridPoint {
+            constructor(x, y) {
+                this.ox = x;
+                this.oy = y;
+                this.x = x;
+                this.y = y;
+                this.vx = 0;
+                this.vy = 0;
+            }
+
+            update() {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < cfg.gridForceDist) {
+                    const force = (cfg.gridForceDist - dist) / cfg.gridForceDist;
+                    const angle = Math.atan2(dy, dx);
+                    this.vx -= Math.cos(angle) * force * 2;
+                    this.vy -= Math.sin(angle) * force * 2;
+                }
+
+                this.vx += (this.ox - this.x) * 0.05;
+                this.vy += (this.oy - this.y) * 0.05;
+                this.vx *= 0.85;
+                this.vy *= 0.85;
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+
+            draw() {
+                const size = Math.abs(this.ox - this.x) * 0.1 + 1;
+                ctx.fillStyle = isHovering
+                    ? 'rgba(255, 0, 85, 0.4)'
+                    : cfg.colorGrid;
+                ctx.fillRect(this.x, this.y, size, size);
+            }
+        }
+
+        // ==============================
+        // PARTICLE
+        // ==============================
+        class Particle {
+            constructor() { this.reset(); }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.size = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 200 && dist > 0) {
+                    this.x += dx * 0.01;
+                    this.y += dy * 0.01;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = isHovering ? cfg.colorGlitch : cfg.colorPrimary;
+                ctx.fill();
+            }
+        }
+
+        let gridPoints = [];
+        let particles = [];
+
+        function init() {
+            resize();
+            gridPoints = [];
+            for (let y = 0; y < height; y += cfg.gridSpacing) {
+                for (let x = 0; x < width; x += cfg.gridSpacing) {
+                    gridPoints.push(new GridPoint(x, y));
+                }
+            }
+            particles = [];
+            for (let i = 0; i < cfg.particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            init();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+
+            const target = e.target.closest('.interactive-target, a, button, .fe-btn, .fe-nav-cta, .fe-nav-link, .fe-nav-menu, .fe-card, .fe-album-card, .fe-pengurus-card, .fe-nav-toggle');
+            if (target) {
+                isHovering = true;
+                hoverTarget = target;
+                if (!target.classList.contains('fe-glitch-active')) {
+                    target.classList.add('fe-glitch-active');
+                }
+            } else {
+                isHovering = false;
+                hoverTarget = null;
+                document.querySelectorAll('.fe-glitch-active').forEach((el) => {
+                    el.classList.remove('fe-glitch-active');
+                });
+            }
+        });
+
+        document.addEventListener('mousedown', () => {
+            shake = 10;
+            particles.forEach((p) => {
+                p.vx = (Math.random() - 0.5) * 20;
+                p.vy = (Math.random() - 0.5) * 20;
+            });
+        });
+
+        function drawLines() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < cfg.connectionDist) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        const alpha = 1 - dist / cfg.connectionDist;
+                        ctx.strokeStyle = isHovering
+                            ? `rgba(255, 0, 85, ${alpha * 0.5})`
+                            : `rgba(255, 210, 26, ${alpha * 0.35})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+
+                const dx = particles[i].x - cursor.x;
+                const dy = particles[i].y - cursor.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < cfg.connectionDist) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(cursor.x, cursor.y);
+                    const alpha = 1 - dist / cfg.connectionDist;
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.5})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function drawPolygon(x, y, radius, sides, rotation, color, lineWidth = 2) {
+            ctx.beginPath();
+            for (let i = 0; i < sides; i++) {
+                const angle = rotation + (i * 2 * Math.PI / sides);
+                const px = x + radius * Math.cos(angle);
+                const py = y + radius * Math.sin(angle);
+                i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+        }
+
+        function drawCursor() {
+            let targetX = mouse.x;
+            let targetY = mouse.y;
+            let magnetic = false;
+
+            if (isHovering && hoverTarget) {
+                const rect = hoverTarget.getBoundingClientRect();
+                targetX += (rect.left + rect.width / 2 - targetX) * 0.3;
+                targetY += (rect.top + rect.height / 2 - targetY) * 0.3;
+                magnetic = true;
+            }
+
+            cursor.x += (targetX - cursor.x) * cfg.cursorEase;
+            cursor.y += (targetY - cursor.y) * cfg.cursorEase;
+
+            trail.push({ x: cursor.x, y: cursor.y });
+            if (trail.length > cfg.trailMax) trail.shift();
+
+            if (trail.length > 1) {
+                ctx.beginPath();
+                ctx.moveTo(trail[0].x, trail[0].y);
+
+                for (let i = 1; i < trail.length - 1; i++) {
+                    const xc = (trail[i].x + trail[i + 1].x) / 2;
+                    const yc = (trail[i].y + trail[i + 1].y) / 2;
+                    ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
+                }
+
+                const gradient = ctx.createLinearGradient(
+                    trail[0].x, trail[0].y,
+                    cursor.x, cursor.y
+                );
+                gradient.addColorStop(0, 'rgba(255, 210, 26, 0)');
+                gradient.addColorStop(1, magnetic
+                    ? 'rgba(255, 0, 85, 0.6)'
+                    : 'rgba(255, 210, 26, 0.5)'
+                );
+
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = magnetic ? 4 : 2;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+
+            const time = Date.now() * 0.002;
+            const size = magnetic ? 22 : 16;
+
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = magnetic ? cfg.colorGlitch : cfg.colorPrimary;
+
+            drawPolygon(cursor.x, cursor.y, size, 6, -time, magnetic ? cfg.colorGlitch : cfg.colorPrimary, 2);
+            drawPolygon(cursor.x, cursor.y, size * 0.6, 3, time * 1.5, '#ffffff', 1.5);
+
+            ctx.beginPath();
+            ctx.arc(cursor.x, cursor.y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+        }
+
+        function animate() {
+            let shakeX = 0, shakeY = 0;
+            if (shake > 0) {
+                shakeX = (Math.random() - 0.5) * shake;
+                shakeY = (Math.random() - 0.5) * shake;
+                shake *= 0.9;
+                if (shake < 0.5) shake = 0;
+            }
+
+            ctx.save();
+            ctx.clearRect(0, 0, width, height);
+            ctx.translate(shakeX, shakeY);
+
+            gridPoints.forEach((p) => { p.update(); p.draw(); });
+            particles.forEach((p) => { p.update(); p.draw(); });
+            drawLines();
+            drawCursor();
+
+            ctx.restore();
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        if (loader) {
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 1000);
+            }, 500);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCyberFluxCursor);
+    } else {
+        initCyberFluxCursor();
+    }
+})();
+
+
+/* =========================================================
+   SOCIAL MEDIA PARTICLES — Plexus di Section Social
+   ========================================================= */
+
+(function () {
+    function initSocialParticles() {
+        const canvas = document.getElementById('feSocialParticles');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Skip di mobile / reduced motion
+        if (window.innerWidth < 768) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        // Config
+        const CONFIG = {
+            particleCount: 50,
+            maxDistance: 140,
+            particleRadius: 1.8,
+            speed: 0.5,
+            colors: {
+                particle: 'rgba(255, 210, 26, 0.8)',
+                line: 'rgba(255, 210, 26, ', // + opacity + )
+                particleGlow: 'rgba(255, 210, 26, 0.4)',
+            },
+        };
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+
+            width = rect.width;
+            height = rect.height;
+
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * CONFIG.speed;
+                this.vy = (Math.random() - 0.5) * CONFIG.speed;
+                this.radius = CONFIG.particleRadius;
+            }
+
+            move() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                // Glow
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius * 3, 0, Math.PI * 2);
+                ctx.fillStyle = CONFIG.colors.particleGlow;
+                ctx.fill();
+
+                // Core
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = CONFIG.colors.particle;
+                ctx.fill();
+            }
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < CONFIG.maxDistance) {
+                        const opacity = 0.5 * (1 - distance / CONFIG.maxDistance);
+                        ctx.strokeStyle = CONFIG.colors.line + opacity + ')';
+                        ctx.lineWidth = 0.8;
+
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            particles.forEach((p) => {
+                p.move();
+                p.draw();
+            });
+
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+
+        function init() {
+            resize();
+            particles = [];
+            for (let i = 0; i < CONFIG.particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            init();
+        });
+
+        init();
+        animate();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSocialParticles);
+    } else {
+        initSocialParticles();
+    }
 })();

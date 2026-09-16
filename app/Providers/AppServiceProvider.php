@@ -22,6 +22,7 @@ use App\Models\Surat;
 use App\Models\User;
 use App\Observers\ActivityLogObserver;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\URL; // <--- Import facade URL
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +35,16 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Force HTTPS (Fix Mixed Content di Tunneling / Ngrok / VS Code Ports)
+        |--------------------------------------------------------------------------
+        */
+        if (request()->server('HTTP_X_FORWARDED_PROTO') == 'https' || str_contains(config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
+
+
         /*
         |--------------------------------------------------------------------------
         | Pagination

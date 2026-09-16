@@ -30,6 +30,11 @@ class PengurusRequest extends FormRequest
                 Rule::notIn([$pengurusId]),
             ],
 
+            'is_bph' => [       // ✅ baru
+                'nullable',
+                'boolean',
+            ],
+
             'nama' => [
                 'required',
                 'string',
@@ -92,5 +97,12 @@ class PengurusRequest extends FormRequest
                 ]),
             ],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_bph' => $this->boolean('is_bph'),
+        ]);
     }
 }

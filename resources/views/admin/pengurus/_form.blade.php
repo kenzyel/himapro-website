@@ -108,13 +108,16 @@
             name="departemen_id"
             class="form-select @error('departemen_id') is-invalid @enderror"
         >
-            <option value="">— Tidak ada / Pimpinan —</option>
+            <option value="">—</option>
             @foreach ($departemens as $departemen)
                 <option value="{{ $departemen->id }}" @selected(old('departemen_id', $pengurus->departemen_id ?? '') == $departemen->id)>
                     {{ $departemen->nama }}
                 </option>
             @endforeach
         </select>
+        <div class="form-text">
+            Kosongkan kalau BPH atau pengurus tanpa departemen.
+        </div>
         @error('departemen_id')
             <div class="text-danger small mt-1">{{ $message }}</div>
         @enderror
@@ -137,6 +140,38 @@
         @error('parent_id')
             <div class="text-danger small mt-1">{{ $message }}</div>
         @enderror
+    </div>
+
+    {{-- ✅ CHECKBOX BPH --}}
+    <div class="col-12">
+        <div class="form-check form-switch p-3" style="
+            background: rgba(255, 210, 26, 0.05);
+            border: 1px solid rgba(255, 210, 26, 0.2);
+            border-radius: var(--radius);
+        ">
+            <input type="hidden" name="is_bph" value="0">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="is_bph"
+                name="is_bph"
+                value="1"
+                @checked(old('is_bph', isset($pengurus) ? $pengurus->is_bph : false))
+            >
+            <label class="form-check-label" for="is_bph" style="font-size: 13px; font-weight: 700;">
+                <i class="bi bi-award-fill" style="color: var(--primary);"></i>
+                Tandai sebagai BPH (Badan Pengurus Harian)
+            </label>
+            <div class="form-text" style="margin-top: 6px;">
+                Centang kalau pengurus ini adalah <strong>Ketua, Wakil, Sekretaris, atau Bendahara</strong>.
+                BPH tidak akan muncul di section "Departemen" pada halaman <code>/tentang</code>, tapi
+                tetap bisa muncul di departemen pada halaman <code>/struktur</code> jika kamu pilih departemennya.
+            </div>
+            @error('is_bph')
+                <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
+        </div>
     </div>
 
 

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->dateTime('tanggal_selesai')->nullable();
 
             $table->string('status', 30)
-                ->default('scheduled')
+                ->default('planned')
                 ->index();
 
             $table->boolean('is_public')

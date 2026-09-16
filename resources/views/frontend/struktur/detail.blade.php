@@ -113,7 +113,7 @@
                             <div class="fe-info-box">
                                 <div class="fe-info-label">Departemen</div>
                                 <div class="fe-info-value">
-                                    {{ $pengurus->departemen?->nama ?? 'Pimpinan' }}
+                                    {{ $pengurus->departemen_nama }}
                                 </div>
                             </div>
                         </div>

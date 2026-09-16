@@ -120,33 +120,40 @@
                     ! empty($appSettings['social_instagram']) ||
                     ! empty($appSettings['social_tiktok']) ||
                     ! empty($appSettings['social_youtube']) ||
-                    ! empty($appSettings['social_whatsapp'])
+                    ! empty($appSettings['social_whatsapp']) ||
+                    ! empty($appSettings['social_facebook'])
                 )
                     <div style="margin-top: 40px;">
                         <div class="fe-contact-label" style="margin-bottom: 14px;">Ikuti Kami</div>
 
                         <div class="fe-socials">
                             @if (! empty($appSettings['social_instagram']))
-                                <a href="{{ $appSettings['social_instagram'] }}" target="_blank" class="fe-social-item" title="Instagram">
+                                <a href="{{ $appSettings['social_instagram'] }}" target="_blank" rel="noopener" class="fe-social-item ig" title="Instagram">
                                     <i class="bi bi-instagram"></i>
                                 </a>
                             @endif
 
                             @if (! empty($appSettings['social_tiktok']))
-                                <a href="{{ $appSettings['social_tiktok'] }}" target="_blank" class="fe-social-item" title="TikTok">
+                                <a href="{{ $appSettings['social_tiktok'] }}" target="_blank" rel="noopener" class="fe-social-item tt" title="TikTok">
                                     <i class="bi bi-tiktok"></i>
                                 </a>
                             @endif
 
                             @if (! empty($appSettings['social_youtube']))
-                                <a href="{{ $appSettings['social_youtube'] }}" target="_blank" class="fe-social-item" title="YouTube">
+                                <a href="{{ $appSettings['social_youtube'] }}" target="_blank" rel="noopener" class="fe-social-item yt" title="YouTube">
                                     <i class="bi bi-youtube"></i>
                                 </a>
                             @endif
 
                             @if (! empty($appSettings['social_whatsapp']))
-                                <a href="{{ $appSettings['social_whatsapp'] }}" target="_blank" class="fe-social-item" title="WhatsApp">
+                                <a href="{{ $appSettings['social_whatsapp'] }}" target="_blank" rel="noopener" class="fe-social-item wa" title="WhatsApp">
                                     <i class="bi bi-whatsapp"></i>
+                                </a>
+                            @endif
+
+                            @if (! empty($appSettings['social_facebook']))
+                                <a href="{{ $appSettings['social_facebook'] }}" target="_blank" rel="noopener" class="fe-social-item fb" title="Facebook">
+                                    <i class="bi bi-facebook"></i>
                                 </a>
                             @endif
                         </div>
@@ -406,35 +413,6 @@
 
 a.fe-contact-value:hover {
     color: var(--fe-primary);
-}
-
-/* SOCIALS */
-.fe-socials {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.fe-social-item {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: var(--fe-card);
-    border: 1px solid var(--fe-border);
-    color: var(--fe-muted);
-    font-size: 18px;
-    transition: all var(--fe-transition);
-}
-
-.fe-social-item:hover {
-    background: var(--fe-primary);
-    border-color: var(--fe-primary);
-    color: #111;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(255, 210, 26, 0.35);
 }
 
 /* FORM */

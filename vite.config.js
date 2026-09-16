@@ -11,5 +11,10 @@ export default defineConfig({
             ],
             refresh: true,
         }),
-    ],
+    ],server: {
+        host: '0.0.0.0',
+        hmr: {
+            host: '192.168.1.13', // Ganti dengan IP Laptop kamu
+        },
+    },
 });
