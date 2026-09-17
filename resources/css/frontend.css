@@ -64,6 +64,13 @@ body.fe-body a {
     padding-top: 160px !important;
 }
 
+/* Di mobile, topbar fixed jadi kita kasih padding-top */
+@media (max-width: 991.98px) {
+    .fe-page-header {
+        padding-top: 100px !important;
+    }
+}
+
 /* =========================================================
    BASE
    ========================================================= */
@@ -90,7 +97,7 @@ body.fe-body a {
 }
 
 /* =========================================================
-   NAVBAR
+   NAVBAR DESKTOP — Hanya tampil di >= 992px
    ========================================================= */
 
 .fe-navbar {
@@ -103,6 +110,7 @@ body.fe-body a {
     background: transparent;
     border-bottom: 1px solid transparent;
     transition: all var(--fe-transition);
+    display: block;
 }
 
 .fe-navbar.scrolled {
@@ -119,6 +127,17 @@ body.fe-body a {
     justify-content: space-between;
     gap: 32px;
 }
+
+/* Sembunyikan navbar desktop di mobile */
+@media (max-width: 991.98px) {
+    .fe-navbar {
+        display: none !important;
+    }
+}
+
+/* =========================================================
+   BRAND (dipakai di navbar desktop & mobile topbar)
+   ========================================================= */
 
 .fe-brand {
     display: flex;
@@ -143,6 +162,29 @@ body.fe-body a {
     box-shadow: 0 4px 20px rgba(255, 210, 26, 0.35);
 }
 
+.fe-brand-logo {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.fe-brand-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+@media (max-width: 767.98px) {
+    .fe-brand-logo { width: 36px; height: 36px; }
+    .fe-brand-mark { width: 36px; height: 36px; font-size: 13px; }
+}
+
 .fe-brand-text {
     display: flex;
     flex-direction: column;
@@ -162,6 +204,10 @@ body.fe-body a {
     text-transform: uppercase;
 }
 
+/* =========================================================
+   MENU DESKTOP — hanya tampil di dalam navbar desktop
+   ========================================================= */
+
 .fe-nav-menu {
     display: flex;
     align-items: center;
@@ -176,6 +222,7 @@ body.fe-body a {
     color: var(--fe-muted);
     transition: all var(--fe-transition);
     position: relative;
+    text-decoration: none;
 }
 
 .fe-nav-link:hover,
@@ -208,6 +255,7 @@ body.fe-body a {
     font-weight: 800;
     box-shadow: 0 4px 16px rgba(255, 210, 26, 0.3);
     transition: all var(--fe-transition);
+    text-decoration: none;
 }
 
 .fe-nav-cta:hover {
@@ -216,70 +264,224 @@ body.fe-body a {
     color: #111;
 }
 
-.fe-nav-toggle {
+/* =========================================================
+   MOBILE TOPBAR — hanya tampil di < 992px
+   ========================================================= */
+
+.fe-mobile-topbar {
     display: none;
-    width: 42px;
-    height: 42px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--fe-border);
-    color: var(--fe-text);
-    font-size: 20px;
-    cursor: pointer;
 }
 
 @media (max-width: 991.98px) {
-    .fe-nav-menu {
+    .fe-mobile-topbar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 14px 0;
+        background: rgba(11, 11, 13, 0.95);
+        border-bottom: 1px solid var(--fe-border);
+    }
+
+    .fe-mobile-topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .fe-mobile-toggle {
+        width: 44px;
+        height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--fe-border);
+        color: var(--fe-text);
+        font-size: 22px;
+        cursor: pointer;
+        transition: all var(--fe-transition);
+        position: relative;
+        z-index: 1002;
+    }
+
+    .fe-mobile-toggle:hover {
+        background: rgba(255, 210, 26, 0.15);
+        border-color: var(--fe-primary);
+        color: var(--fe-primary);
+    }
+}
+
+/* =========================================================
+   MOBILE SIDEBAR DRAWER
+   ========================================================= */
+
+.fe-mobile-sidebar {
+    display: none;
+}
+
+@media (max-width: 991.98px) {
+    .fe-mobile-sidebar {
+        display: flex;
+        flex-direction: column;
         position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
-        width: 280px;
-        max-width: 80vw;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 4px;
-        padding: 90px 20px 20px;
-        background: var(--fe-section);
+        width: 300px;
+        max-width: 85vw;
+        background: #141416;
+        background-color: #141416;
         border-left: 1px solid var(--fe-border);
+        z-index: 100000;
         transform: translateX(100%);
-        transition: transform var(--fe-transition);
-        z-index: 1001;
-        overflow-y: auto;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -20px 0 60px rgba(0, 0, 0, 0.7);
+        overflow: hidden;
+        pointer-events: auto;
     }
 
-    .fe-nav-menu.open {
+    .fe-mobile-sidebar.open {
         transform: translateX(0);
     }
 
-    .fe-nav-link {
-        padding: 14px 16px;
-        font-size: 15px;
+    /* Header sidebar */
+    .fe-mobile-sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 22px;
+        border-bottom: 1px solid var(--fe-border);
+        flex-shrink: 0;
     }
 
-    .fe-nav-cta {
-        margin-top: 12px;
-        justify-content: center;
+    .fe-mobile-sidebar-title {
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--fe-primary);
     }
 
-    .fe-nav-toggle {
+    .fe-mobile-sidebar-close {
+        width: 38px;
+        height: 38px;
         display: inline-flex;
-        z-index: 1002;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--fe-border);
+        color: var(--fe-text);
+        font-size: 15px;
+        cursor: pointer;
+        transition: all var(--fe-transition);
+    }
+
+    .fe-mobile-sidebar-close:hover {
+        background: rgba(255, 0, 85, 0.15);
+        border-color: #ff0055;
+        color: #ff0055;
+    }
+
+    /* Nav list */
+    .fe-mobile-sidebar-nav {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 12px 12px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .fe-mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--fe-muted);
+        text-decoration: none;
+        transition: all var(--fe-transition);
+        border: 1px solid transparent;
+    }
+
+    .fe-mobile-nav-link i {
+        font-size: 18px;
+        width: 22px;
+        text-align: center;
+        color: var(--fe-muted);
+        transition: all var(--fe-transition);
+    }
+
+    .fe-mobile-nav-link:hover {
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--fe-text);
+    }
+
+    .fe-mobile-nav-link:hover i {
+        color: var(--fe-primary);
+    }
+
+    .fe-mobile-nav-link.active {
+        background: rgba(255, 210, 26, 0.1);
+        color: var(--fe-primary);
+        border-color: rgba(255, 210, 26, 0.3);
+    }
+
+    .fe-mobile-nav-link.active i {
+        color: var(--fe-primary);
+    }
+
+    /* Footer CTA */
+    .fe-mobile-sidebar-footer {
+        flex-shrink: 0;
+        padding: 16px 20px 24px;
+        border-top: 1px solid var(--fe-border);
+    }
+
+    .fe-mobile-cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 14px 20px;
+        border-radius: 12px;
+        background: var(--fe-grad-primary);
+        color: #111;
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 6px 20px rgba(255, 210, 26, 0.35);
+        transition: all var(--fe-transition);
+    }
+
+    .fe-mobile-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 32px rgba(255, 210, 26, 0.5);
+        color: #111;
     }
 }
 
-.fe-nav-overlay {
+/* =========================================================
+   MOBILE OVERLAY
+   ========================================================= */
+
+.fe-mobile-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 999;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 99999;
 }
 
-.fe-nav-overlay.show {
+.fe-mobile-overlay.show {
     display: block;
 }
 
@@ -870,8 +1072,6 @@ main > section:last-child.fe-section-sm {
     letter-spacing: 0.08em;
     font-weight: 700;
 }
-
-/* HERO VISUAL */
 
 .fe-hero-visual {
     position: relative;
@@ -1763,32 +1963,6 @@ main > section:last-child.fe-section-sm {
 .fe-struktur-heading .fe-section-label { margin-bottom: 16px; }
 
 /* =========================================================
-   BRAND LOGO — Gambar
-   ========================================================= */
-
-.fe-brand-logo {
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.fe-brand-logo img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-@media (max-width: 767.98px) {
-    .fe-brand-logo { width: 36px; height: 36px; }
-}
-
-/* =========================================================
    HERO CARD — Warna Icon Dinamis
    ========================================================= */
 
@@ -1801,7 +1975,10 @@ main > section:last-child.fe-section-sm {
 .fe-hero-card-icon.fe-color-red { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
 
 /* =========================================================
-   CYBER-FLUX CURSOR — Theme SAKTI
+   CYBER-FLUX CURSOR — FINAL
+   - Kursor custom tetap aktif di laptop walaupun mode mobile
+   - Dimatikan hanya di HP asli (touch-only)
+   - Saat sidebar mobile terbuka, canvas turun ke bawah
    ========================================================= */
 
 .fe-scene-canvas {
@@ -1812,32 +1989,58 @@ main > section:last-child.fe-section-sm {
     height: 100%;
     z-index: 9999;
     pointer-events: none;
-    mix-blend-mode: screen;
+    transition: opacity 0.3s ease;
 }
 
-/* Hide cursor asli — HANYA desktop */
+/* Saat sidebar mobile terbuka, canvas turun & redup */
+@media (max-width: 991.98px) {
+    body.menu-locked .fe-scene-canvas {
+        z-index: 1 !important;
+        opacity: 0.08 !important;
+    }
+}
+
+/* Hide cursor asli — HANYA kalau cursor custom aktif */
 @media (hover: hover) and (pointer: fine) {
-    body.fe-body,
-    body.fe-body * {
+    body.fe-body:not(.cursor-default),
+    body.fe-body:not(.cursor-default) * {
         cursor: none !important;
     }
+}
+
+/* Fallback — kalau cursor custom dimatikan, tampilkan kursor asli */
+body.fe-body.cursor-default,
+body.fe-body.cursor-default * {
+    cursor: auto !important;
+}
+
+body.fe-body.cursor-default a,
+body.fe-body.cursor-default button,
+body.fe-body.cursor-default .fe-nav-link,
+body.fe-body.cursor-default .fe-nav-cta,
+body.fe-body.cursor-default .fe-mobile-nav-link,
+body.fe-body.cursor-default .fe-mobile-toggle,
+body.fe-body.cursor-default .fe-mobile-sidebar-close,
+body.fe-body.cursor-default .fe-footer-link,
+body.fe-body.cursor-default .fe-footer-social {
+    cursor: pointer !important;
 }
 
 /* Content di atas canvas */
 body.fe-body main,
 body.fe-body .fe-navbar,
+body.fe-body .fe-mobile-topbar,
 body.fe-body .fe-footer {
     position: relative;
     z-index: 10;
 }
 
-/* Sembunyikan di mobile / reduced-motion */
-@media (max-width: 767.98px) {
-    .fe-scene-canvas,
-    .fe-loader {
-        display: none !important;
-    }
+/* Sembunyikan canvas hanya kalau cursor custom dimatikan */
+body.fe-body.cursor-default .fe-scene-canvas,
+body.fe-body.cursor-default .fe-loader {
+    display: none !important;
 }
+
 @media (prefers-reduced-motion: reduce) {
     .fe-scene-canvas,
     .fe-loader {
@@ -1889,7 +2092,6 @@ body.fe-body .fe-footer {
     100% { transform: translate(0); }
 }
 
-
 /* =========================================================
    SOCIAL MEDIA SECTION — Icon Neon + Particles
    ========================================================= */
@@ -1902,7 +2104,6 @@ body.fe-body .fe-footer {
     isolation: isolate;
 }
 
-/* Canvas particles di belakang */
 .fe-social-particles {
     position: absolute;
     inset: 0;
@@ -1913,7 +2114,6 @@ body.fe-body .fe-footer {
     opacity: 0.7;
 }
 
-/* Container icon */
 .fe-social-icons {
     display: flex;
     justify-content: center;
@@ -1924,7 +2124,6 @@ body.fe-body .fe-footer {
     z-index: 2;
 }
 
-/* Icon base */
 .fe-social-icon {
     width: 64px;
     height: 64px;
@@ -1949,9 +2148,6 @@ body.fe-body .fe-footer {
     transition: all 0.35s ease;
 }
 
-/* =========================================================
-   INSTAGRAM
-========================================================= */
 .fe-social-icon.ig i {
     background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
     -webkit-background-clip: text;
@@ -1966,6 +2162,9 @@ body.fe-body .fe-footer {
     border-radius: 50%;
     padding: 2px;
     background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
     -webkit-mask:
         linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
@@ -1988,9 +2187,6 @@ body.fe-body .fe-footer {
     color: #fff;
 }
 
-/* =========================================================
-   TIKTOK
-========================================================= */
 .fe-social-icon.tt i {
     color: #4de8f4;
     filter: drop-shadow(3px 3px 0 #fe2c55);
@@ -2019,9 +2215,6 @@ body.fe-body .fe-footer {
     filter: drop-shadow(3px 3px 0 #fe2c55);
 }
 
-/* =========================================================
-   YOUTUBE
-========================================================= */
 .fe-social-icon.yt i {
     color: #ff0000;
 }
@@ -2047,9 +2240,6 @@ body.fe-body .fe-footer {
     color: #fff;
 }
 
-/* =========================================================
-   WHATSAPP
-========================================================= */
 .fe-social-icon.wa i {
     color: #25d366;
 }
@@ -2075,9 +2265,6 @@ body.fe-body .fe-footer {
     color: #fff;
 }
 
-/* =========================================================
-   FACEBOOK
-========================================================= */
 .fe-social-icon.fb i {
     color: #1877f2;
 }
@@ -2103,9 +2290,6 @@ body.fe-body .fe-footer {
     color: #fff;
 }
 
-/* =========================================================
-   PULSE ANIMATION
-========================================================= */
 @keyframes feSocialPulse {
     0% {
         box-shadow:
@@ -2138,9 +2322,6 @@ body.fe-body .fe-footer {
 .fe-social-icon.wa { animation-delay: 1.8s; }
 .fe-social-icon.fb { animation-delay: 2.4s; }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
 @media (max-width: 767.98px) {
     .fe-social-section {
         padding: 60px 0;
@@ -2161,14 +2342,10 @@ body.fe-body .fe-footer {
     }
 }
 
-
 /* =========================================================
    SOCIAL MEDIA ICONS — Neon Hover (Footer + Contact)
    ========================================================= */
 
-/* ---------------------------------------------
-   FOOTER SOCIAL ICONS
-   --------------------------------------------- */
 .fe-footer-socials {
     display: flex;
     gap: 12px;
@@ -2199,9 +2376,6 @@ body.fe-body .fe-footer {
     transition: all 0.35s ease;
 }
 
-/* ---------------------------------------------
-   CONTACT SOCIAL ICONS (info kontak)
-   --------------------------------------------- */
 .fe-socials {
     display: flex;
     gap: 12px;
@@ -2231,17 +2405,11 @@ body.fe-body .fe-footer {
     transition: all 0.35s ease;
 }
 
-/* =========================================================
-   BASE HOVER — naik + scale (semua platform)
-   ========================================================= */
 .fe-footer-social:hover,
 .fe-social-item:hover {
     transform: translateY(-4px) scale(1.08);
 }
 
-/* =========================================================
-   INSTAGRAM
-   ========================================================= */
 .fe-footer-social.ig:hover,
 .fe-social-item.ig:hover {
     background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
@@ -2257,9 +2425,6 @@ body.fe-body .fe-footer {
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
 }
 
-/* =========================================================
-   TIKTOK
-   ========================================================= */
 .fe-footer-social.tt:hover,
 .fe-social-item.tt:hover {
     background: #fff;
@@ -2277,9 +2442,6 @@ body.fe-body .fe-footer {
         drop-shadow(3px 3px 0 #fe2c55);
 }
 
-/* =========================================================
-   YOUTUBE
-   ========================================================= */
 .fe-footer-social.yt:hover,
 .fe-social-item.yt:hover {
     background: #ff0000;
@@ -2295,9 +2457,6 @@ body.fe-body .fe-footer {
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
 }
 
-/* =========================================================
-   WHATSAPP
-   ========================================================= */
 .fe-footer-social.wa:hover,
 .fe-social-item.wa:hover {
     background: #25d366;
@@ -2313,9 +2472,6 @@ body.fe-body .fe-footer {
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
 }
 
-/* =========================================================
-   FACEBOOK
-   ========================================================= */
 .fe-footer-social.fb:hover,
 .fe-social-item.fb:hover {
     background: #1877f2;
@@ -2331,11 +2487,6 @@ body.fe-body .fe-footer {
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
 }
 
-/* =========================================================
-   COLORED ICON DEFAULT (sebelum hover)
-   ========================================================= */
-
-/* Instagram — gradient text */
 .fe-footer-social.ig i,
 .fe-social-item.ig i {
     background: linear-gradient(45deg, #833AB4, #FD1D1D, #F56040, #FCAF45);
@@ -2344,34 +2495,27 @@ body.fe-body .fe-footer {
     background-clip: text;
 }
 
-/* TikTok — cyan + drop shadow pink */
 .fe-footer-social.tt i,
 .fe-social-item.tt i {
     color: #4de8f4;
     filter: drop-shadow(2px 2px 0 #fe2c55);
 }
 
-/* YouTube — merah */
 .fe-footer-social.yt i,
 .fe-social-item.yt i {
     color: #ff0000;
 }
 
-/* WhatsApp — hijau */
 .fe-footer-social.wa i,
 .fe-social-item.wa i {
     color: #25d366;
 }
 
-/* Facebook — biru */
 .fe-footer-social.fb i,
 .fe-social-item.fb i {
     color: #1877f2;
 }
 
-/* =========================================================
-   PULSE RING ANIMATION (subtle, background)
-   ========================================================= */
 @keyframes feSocialRingPulse {
     0% {
         box-shadow: 0 0 0 0 currentColor;
@@ -2397,16 +2541,12 @@ body.fe-body .fe-footer {
     animation: feSocialRingPulse 3s ease-in-out infinite;
 }
 
-/* Delay berbeda per platform biar bergantian */
 .fe-footer-social.ig, .fe-social-item.ig { animation-delay: 0s; }
 .fe-footer-social.tt, .fe-social-item.tt { animation-delay: 0.6s; }
 .fe-footer-social.yt, .fe-social-item.yt { animation-delay: 1.2s; }
 .fe-footer-social.wa, .fe-social-item.wa { animation-delay: 1.8s; }
 .fe-footer-social.fb, .fe-social-item.fb { animation-delay: 2.4s; }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
 @media (max-width: 767.98px) {
     .fe-footer-social {
         width: 40px;

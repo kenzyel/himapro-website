@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /* =========================================================
-   SIDEBAR TOGGLE — Desktop collapse + Mobile overlay
+   SIDEBAR ADMIN TOGGLE — Desktop collapse + Mobile overlay
    ========================================================= */
 
 (function () {
@@ -194,65 +194,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /* =========================================================
-   FRONTEND PUBLIK — Navbar & interaksi
+   FRONTEND PUBLIK — Navbar Desktop + Sidebar Mobile
    ========================================================= */
 
 (function () {
-    function initFrontendNavbar() {
-        const navbar = document.querySelector('.fe-navbar');
-        const toggle = document.querySelector('.fe-nav-toggle');
-        const menu = document.querySelector('.fe-nav-menu');
-        const overlay = document.querySelector('.fe-nav-overlay');
+    function initFrontendNav() {
+        const navbar = document.getElementById('feNavbar');
+        const sidebar = document.getElementById('feMobileSidebar');
+        const overlay = document.getElementById('feMobileOverlay');
+        const toggle = document.getElementById('feMobileToggle');
+        const closeBtn = document.getElementById('feMobileClose');
 
-        if (!navbar) return;
-
-        function handleScroll() {
-            if (window.scrollY > 30) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+        // =====================
+        // DESKTOP: scroll effect pada navbar
+        // =====================
+        if (navbar) {
+            function handleScroll() {
+                if (window.scrollY > 30) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
             }
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
         }
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        handleScroll();
+        // =====================
+        // MOBILE: sidebar drawer
+        // =====================
+        if (!sidebar) return;
 
-        function closeMenu() {
-            menu?.classList.remove('open');
-            overlay?.classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        function openMenu() {
-            menu?.classList.add('open');
+        function openSidebar() {
+            sidebar.classList.add('open');
             overlay?.classList.add('show');
+            document.body.classList.add('menu-locked');
+            document.body.classList.add('cursor-default'); // ← kursor asli kembali
             document.body.style.overflow = 'hidden';
+            sidebar.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay?.classList.remove('show');
+            document.body.classList.remove('menu-locked');
+            document.body.classList.remove('cursor-default'); // ← kursor custom kembali
+            document.body.style.overflow = '';
+            sidebar.setAttribute('aria-hidden', 'true');
         }
 
         toggle?.addEventListener('click', function (e) {
+            e.preventDefault();
             e.stopPropagation();
-            if (menu?.classList.contains('open')) {
-                closeMenu();
-            } else {
-                openMenu();
+            openSidebar();
+        });
+
+        closeBtn?.addEventListener('click', function (e) {
+            e.preventDefault();
+            closeSidebar();
+        });
+
+        overlay?.addEventListener('click', closeSidebar);
+
+        // Tutup sidebar saat klik link
+        sidebar.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', closeSidebar);
+        });
+
+        // Tutup dengan ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                closeSidebar();
             }
         });
 
-        overlay?.addEventListener('click', closeMenu);
-
-        menu?.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', closeMenu);
-        });
-
+        // Reset saat resize ke desktop
+        let resizeTimer;
         window.addEventListener('resize', function () {
-            if (window.innerWidth > 991.98) closeMenu();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () {
+                if (window.innerWidth >= 992) {
+                    closeSidebar();
+                }
+            }, 150);
         });
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initFrontendNavbar);
+        document.addEventListener('DOMContentLoaded', initFrontendNav);
     } else {
-        initFrontendNavbar();
+        initFrontendNav();
     }
 })();
 
@@ -518,7 +550,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* =========================================================
    CYBER-FLUX CURSOR — Theme SAKTI
-   Port dari Cyber-Flux Cursor Experience
+   - Kursor custom tetap aktif di laptop walaupun resize ke mobile
+   - Dimatikan hanya di HP asli (touch-only) & reduced-motion
+   - Saat sidebar mobile terbuka, class cursor-default ditambahkan
+     ke body → kursor asli kembali, canvas disembunyikan
    ========================================================= */
 
 (function () {
@@ -531,19 +566,24 @@ document.addEventListener('DOMContentLoaded', function () {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        if (window.innerWidth < 768) {
+        // Deteksi HP asli (touch-only), bukan berdasarkan innerWidth
+        const isTouchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+        if (isTouchOnly) {
             if (loader) loader.style.display = 'none';
+            document.body.classList.add('cursor-default');
             return;
         }
 
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             if (loader) loader.style.display = 'none';
+            document.body.classList.add('cursor-default');
             return;
         }
 
-        // ==============================
-        // CONFIG — Theme SAKTI
-        // ==============================
+        // Aktifkan kursor custom
+        document.body.classList.remove('cursor-default');
+
         const cfg = {
             gridSpacing: 60,
             gridDistortion: 25,
@@ -568,9 +608,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let hoverTarget = null;
         let shake = 0;
 
-        // ==============================
-        // GRID
-        // ==============================
         class GridPoint {
             constructor(x, y) {
                 this.ox = x;
@@ -610,9 +647,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // ==============================
-        // PARTICLE
-        // ==============================
         class Particle {
             constructor() { this.reset(); }
 
@@ -655,13 +689,18 @@ document.addEventListener('DOMContentLoaded', function () {
         function init() {
             resize();
             gridPoints = [];
-            for (let y = 0; y < height; y += cfg.gridSpacing) {
-                for (let x = 0; x < width; x += cfg.gridSpacing) {
+
+            const spacing = width < 768 ? 40 : cfg.gridSpacing;
+
+            for (let y = 0; y < height; y += spacing) {
+                for (let x = 0; x < width; x += spacing) {
                     gridPoints.push(new GridPoint(x, y));
                 }
             }
+
             particles = [];
-            for (let i = 0; i < cfg.particleCount; i++) {
+            const pCount = width < 768 ? 30 : cfg.particleCount;
+            for (let i = 0; i < pCount; i++) {
                 particles.push(new Particle());
             }
         }
@@ -671,16 +710,20 @@ document.addEventListener('DOMContentLoaded', function () {
             height = canvas.height = window.innerHeight;
         }
 
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            resize();
-            init();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                resize();
+                init();
+            }, 150);
         });
 
         document.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
 
-            const target = e.target.closest('.interactive-target, a, button, .fe-btn, .fe-nav-cta, .fe-nav-link, .fe-nav-menu, .fe-card, .fe-album-card, .fe-pengurus-card, .fe-nav-toggle');
+            const target = e.target.closest('.interactive-target, a, button, .fe-btn, .fe-nav-cta, .fe-nav-link, .fe-card, .fe-album-card, .fe-pengurus-card, .fe-mobile-toggle, .fe-mobile-nav-link, .fe-mobile-cta, .fe-mobile-sidebar-close');
             if (target) {
                 isHovering = true;
                 hoverTarget = target;
@@ -828,10 +871,16 @@ document.addEventListener('DOMContentLoaded', function () {
             ctx.clearRect(0, 0, width, height);
             ctx.translate(shakeX, shakeY);
 
-            gridPoints.forEach((p) => { p.update(); p.draw(); });
-            particles.forEach((p) => { p.update(); p.draw(); });
-            drawLines();
-            drawCursor();
+            // Kalau menu mobile terbuka, kita skip render canvas
+            // (kanvas juga di-hide oleh CSS via cursor-default)
+            const menuOpen = document.body.classList.contains('menu-locked');
+
+            if (!menuOpen) {
+                gridPoints.forEach((p) => { p.update(); p.draw(); });
+                particles.forEach((p) => { p.update(); p.draw(); });
+                drawLines();
+                drawCursor();
+            }
 
             ctx.restore();
             requestAnimationFrame(animate);
@@ -868,11 +917,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        // Skip di mobile / reduced motion
         if (window.innerWidth < 768) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        // Config
         const CONFIG = {
             particleCount: 50,
             maxDistance: 140,
@@ -880,7 +927,7 @@ document.addEventListener('DOMContentLoaded', function () {
             speed: 0.5,
             colors: {
                 particle: 'rgba(255, 210, 26, 0.8)',
-                line: 'rgba(255, 210, 26, ', // + opacity + )
+                line: 'rgba(255, 210, 26, ',
                 particleGlow: 'rgba(255, 210, 26, 0.4)',
             },
         };
@@ -900,7 +947,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
-        // Particle class
         class Particle {
             constructor() {
                 this.x = Math.random() * width;
@@ -919,13 +965,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             draw() {
-                // Glow
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius * 3, 0, Math.PI * 2);
                 ctx.fillStyle = CONFIG.colors.particleGlow;
                 ctx.fill();
 
-                // Core
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = CONFIG.colors.particle;
